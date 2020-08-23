@@ -31,9 +31,14 @@ public class Duke {
             //Check and process the 'done' command
             int taskToFinish = 0;
             if (inputParts[0].equals("done")) {
-                userInput = "done";
-                //Change from 0-based to 1-base indexing by deducting 1
-                taskToFinish = Integer.parseInt(inputParts[1]) - 1;
+                if (inputParts.length > 1) {
+                    //Change from 0-based to 1-base indexing by deducting 1
+                    taskToFinish = Integer.parseInt(inputParts[1]) - 1;
+                    userInput = "done";
+                } else {
+                    System.out.println("Please choose a task to complete!");
+                    userInput = "list";
+                }
             }
 
             switch (userInput) {
@@ -53,7 +58,7 @@ public class Duke {
                 System.out.println(SINGLE_LINE);
                 break;
             case "done":
-                if (taskToFinish < 0 || taskToFinish > Task.getTotalTasks()) {
+                if (taskToFinish < 0 || taskToFinish > Task.getTotalTasks() || Task.getTotalTasks() == 0) {
                     System.out.println("That Task does not exist!");
                 } else if (tasks.get(taskToFinish).isCompleted()) {
                     System.out.println("That Task has already been completed, but let's shoot it again");
