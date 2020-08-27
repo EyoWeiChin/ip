@@ -7,7 +7,7 @@ public class Task {
     private static int totalTasks = 0;
 
     //Task Constructor
-    public Task(String taskName){
+    public Task(String taskName) {
         this.isCompleted = false;
         this.taskName = taskName;
         totalTasks += 1;

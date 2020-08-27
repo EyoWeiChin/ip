@@ -58,16 +58,16 @@ public class Duke {
                 System.out.println(SINGLE_LINE);
                 break;
             case "done":
-                if (taskToFinish < 0 || taskToFinish > Task.getTotalTasks() || Task.getTotalTasks() == 0) {
+                if (taskToFinish < 0 || taskToFinish > tasks.size() || Task.getTotalTasks() == 0) {
                     System.out.println("That Task does not exist!");
                 } else if (tasks.get(taskToFinish).isCompleted()) {
                     System.out.println("That Task has already been completed, but let's shoot it again");
                 } else {
-                    //TODO: change this to else statement once tested all possible outcomes
+                    //Set the task to be completed and check remaining tasks.
                     tasks.get(taskToFinish).setCompleted(true);
                     System.out.println("Task: '" + tasks.get(taskToFinish).getTaskName() +
                             "' marked as completed, well done!");
-                    if(Task.getTotalTasks() == 0){
+                    if(Task.getTotalTasks() == 0) {
                         System.out.println("All Task Completed!");
                     } else {
                         System.out.println("You have " + Task.getTotalTasks() + " remaining tasks");
