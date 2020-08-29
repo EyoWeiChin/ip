@@ -13,7 +13,6 @@ public class Task {
         totalTasks += 1;
     }
 
-    //Method of Task class
     public boolean isCompleted() {
         return isCompleted;
     }
@@ -41,5 +40,10 @@ public class Task {
 
     public static void setTotalTasks(int totalTasks) {
         Task.totalTasks = totalTasks;
+    }
+
+    @Override
+    public String toString() {
+        return getStatusIndicator() + " " + getTaskName();
     }
 }
