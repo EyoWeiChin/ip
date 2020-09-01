@@ -2,25 +2,31 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
-    private static final String LOGO = " ____        _\n"
-            + "|  _ \\ _   _| | _____\n"
-            + "| | | | | | | |/ / _ \\\n"
-            + "| |_| | |_| |   <  __/\n"
-            + "|____/ \\__,_|_|\\_\\___|\n";
+    private static final String LOGO = " ____        _" + System.lineSeparator()
+            + "|  _ \\ _   _| | _____" + System.lineSeparator()
+            + "| | | | | | | |/ / _ \\" + System.lineSeparator()
+            + "| |_| | |_| |   <  __/" + System.lineSeparator()
+            + "|____/ \\__,_|_|\\_\\___|" + System.lineSeparator();
 
     private static final String SINGLE_LINE =
             "____________________________________________________________";
 
     //Constant variables for Command logic
     private static final String RAW_COMMAND_DELIMIT = " ";
+    private static final int SPLIT_INPUT_LIMIT = 2;
+
     private static final String COMMAND_TODO = "todo";
-    private static final String COMMAND_TODO_DELIMIT = "";
+    private static final String DELIMIT_TODO = "";
+
     private static final String COMMAND_DONE = "done";
-    private static final String COMMAND_DONE_DELIMIT = "";
+    private static final String DELIMIT_DONE = "";
+
     private static final String COMMAND_DEADLINE = "deadline";
-    private static final String COMMAND_DEADLINE_DELIMIT = "/by";
+    private static final String DELIMIT_DEADLINE = "/by";
+
     private static final String COMMAND_EVENT = "event";
-    private static final String COMMAND_EVENT_DELIMIT = "/at";
+    private static final String DELIMIT_EVENT = "/at";
+
     private static final String COMMAND_LIST = "list";
     private static final String COMMAND_BYE = "bye";
 
@@ -38,16 +44,32 @@ public class Duke {
     private static final Scanner SCANNER = new Scanner(System.in);
 
     /**
+     * Declare Messages to be used by Duke here.
+     */
+    private static final String MESSAGE_NO_SUCH_TASK = "That Task does not exist!";
+    private static final String MESSAGE_NO_REMAINING_TASKS = "No remaining tasks";
+    private static final String MESSAGE_TASK_ALREADY_COMPLETED = "That Task has already " +
+            "been completed, but let's shoot it again";
+    private static final String MESSAGE_TASK_COMPLETED = "marked as completed, well done!";
+    private static final String MESSAGE_ALL_TASK_COMPLETED = "All Task Completed!";
+    private static final String MESSAGE_TASKS_LEFT = "You a total of tasks remaining: ";
+    private static final String MESSAGE_NO_TASKS_DUE = "Fortunately, you have no tasks due";
+    private static final String MESSAGE_GOODBYE = "Bye! Hope to see you again soon!";
+    private static final String MESSAGE_GREETING = "Hello! I'm Duke!" + System.lineSeparator()
+            + "What can I do for you?";
+    private static final String MESSAGE_INVALID_OPTION = "Invalid option, Try again!"
+            + System.lineSeparator();
+
+    /**
      * Main entry point of the application
      * Greets the User and begins User interaction
      */
     public static void main(String[] args) {
-        greetUser();
+        printWelcomeScreen();
         //Interaction Component
         boolean stillInteracting = true;
         while (stillInteracting) {
-            String userInput = getUserInput();
-            String[] processedInputs = processInput(userInput);
+            String[] processedInputs = processInput(getUserInput());
             stillInteracting = executeCommand(processedInputs);
         }
     }
@@ -61,21 +83,19 @@ public class Duke {
      * processedInputs[2] = taskParameter, e.g 'Sunday', 'Mon 2pm-4pm'
      **/
     private static String[] processInput(String userInput) {
-        String[] inputParts = userInput.trim().split(RAW_COMMAND_DELIMIT, 2);
-        String[] processedInputs = new String[3];
+        String[] inputParts = userInput.trim().split(RAW_COMMAND_DELIMIT, SPLIT_INPUT_LIMIT);
         switch (inputParts[0]) {
         case COMMAND_DONE:
-            return splitInputToParts(inputParts, COMMAND_DONE_DELIMIT, COMMAND_DONE);
+            return splitInputToParts(inputParts, DELIMIT_DONE, COMMAND_DONE);
         case COMMAND_TODO:
-            return splitInputToParts(inputParts, COMMAND_TODO_DELIMIT, COMMAND_TODO);
+            return splitInputToParts(inputParts, DELIMIT_TODO, COMMAND_TODO);
         case COMMAND_DEADLINE:
-            return splitInputToParts(inputParts, COMMAND_DEADLINE_DELIMIT, COMMAND_DEADLINE);
+            return splitInputToParts(inputParts, DELIMIT_DEADLINE, COMMAND_DEADLINE);
         case COMMAND_EVENT:
-            return splitInputToParts(inputParts, COMMAND_EVENT_DELIMIT, COMMAND_EVENT);
+            return splitInputToParts(inputParts, DELIMIT_EVENT, COMMAND_EVENT);
         default:
             //Catch List and Bye commands that need no processing
-            processedInputs[0] = inputParts[0];
-            return processedInputs;
+            return new String[]{ inputParts[0], INIT_STRING, INIT_STRING };
         }
     }
 
@@ -96,7 +116,7 @@ public class Duke {
 
             //Perform additional splicing if event types are deadline or event
             if (taskType.equals(COMMAND_DEADLINE) || taskType.equals(COMMAND_EVENT)) {
-                String[] dateParts = inputParts[1].trim().split(splitBy, 2);
+                String[] dateParts = inputParts[1].trim().split(splitBy, SPLIT_INPUT_LIMIT);
                 //Input validation check
                 if (dateParts.length > 1) {
                     taskName = dateParts[0];
@@ -132,7 +152,6 @@ public class Duke {
             addTask(newTodo);
             break;
         case COMMAND_DEADLINE:
-            //TODO: Find out why this works, I know it's polymorphism but hmm
             Deadline newDeadLine = new Deadline(taskName, taskParameter);
             addTask(newDeadLine);
             break;
@@ -151,13 +170,6 @@ public class Duke {
     }
 
     /**
-     * Prints the Invalid Option message and a newline.
-     */
-    private static void printInvalidMessage() {
-        System.out.println("Invalid option, Try again!" + System.lineSeparator());
-    }
-
-    /**
      * Checks the task to complete, and completes it if it is a valid task.
      * @param taskIDInString Processed input that identifies the task to complete
      */
@@ -165,21 +177,20 @@ public class Duke {
         // Change from String to Integer then 0-base to 1-base indexing by deducting 1
         int taskIDToFinish = Integer.parseInt(taskIDInString) - 1;
         if (taskIDToFinish < 0 || taskIDToFinish >= tasks.size()) {
-            System.out.println("That Task does not exist!");
+            System.out.println(MESSAGE_NO_SUCH_TASK);
         } else if (Task.getTotalTasks() == 0) {
-            System.out.println("No remaining tasks");
+            System.out.println(MESSAGE_NO_REMAINING_TASKS);
         } else if (tasks.get(taskIDToFinish).isCompleted()) {
-            System.out.println("That Task has already been completed, but let's shoot it again");
+            System.out.println(MESSAGE_TASK_ALREADY_COMPLETED);
         } else {
             //Set the task to be completed and check remaining tasks.
             tasks.get(taskIDToFinish).setCompleted(true);
-            System.out.println("Task: '" + tasks.get(taskIDToFinish).getTaskName().trim() +
-                    "' marked as completed, well done!");
+            System.out.println("'" + tasks.get(taskIDToFinish).getTaskName().trim() + "'");
+            System.out.println(MESSAGE_TASK_COMPLETED);
             if(Task.getTotalTasks() == 0) {
-                System.out.println("All Task Completed!");
+                System.out.println(MESSAGE_ALL_TASK_COMPLETED);
             } else {
-                System.out.println("You have " + Task.getTotalTasks() + " remaining tasks");
-                System.out.println("We'll get them next time!");
+                System.out.println(MESSAGE_TASKS_LEFT + Task.getTotalTasks());
             }
         }
         System.out.println(SINGLE_LINE);
@@ -193,7 +204,7 @@ public class Duke {
         tasks.add(newTask);
         System.out.println(SINGLE_LINE);
         System.out.println("+ " + newTask);
-        System.out.println("You now have " + Task.getTotalTasks() + " remaining task");
+        System.out.println(MESSAGE_TASKS_LEFT + Task.getTotalTasks());
         System.out.println(SINGLE_LINE);
     }
 
@@ -202,7 +213,7 @@ public class Duke {
      */
     private static void listAllTasks() {
         if (tasks.size() == 0) {
-            System.out.println("Fortunately, you have no tasks due");
+            System.out.println(MESSAGE_NO_TASKS_DUE);
         } else {
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println((i + 1) + ": " + tasks.get(i));
@@ -220,22 +231,29 @@ public class Duke {
     }
 
     /**
+     * Prints the Invalid Option message and a newline.
+     */
+    private static void printInvalidMessage() {
+        System.out.println(MESSAGE_INVALID_OPTION);
+    }
+
+    /**
      * Prints the exit message
      */
     private static void printExitMessage() {
         System.out.println(SINGLE_LINE);
-        System.out.println("Bye! Hope to see you again soon!");
+        System.out.println(MESSAGE_GOODBYE);
         System.out.println(SINGLE_LINE);
     }
 
     /**
      * Prints the welcome message
      */
-    private static void greetUser() {
+    private static void printWelcomeScreen() {
         System.out.println(SINGLE_LINE);
         System.out.println(LOGO);
-        System.out.println("Hello! I'm Duke!");
-        System.out.println("What can I do for you?");
+        System.out.println(MESSAGE_GREETING);
+        System.out.println();
         System.out.println(SINGLE_LINE);
     }
 }

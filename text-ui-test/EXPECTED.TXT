@@ -7,34 +7,35 @@ ____________________________________________________________
 
 Hello! I'm Duke!
 What can I do for you?
+
 ____________________________________________________________
 ____________________________________________________________
 + [T][✗] read book
-You now have 1 remaining task
+You a total of tasks remaining: 1
 ____________________________________________________________
 ____________________________________________________________
 + [D][✗] return book (by: June 6th)
-You now have 2 remaining task
+You a total of tasks remaining: 2
 ____________________________________________________________
 ____________________________________________________________
 + [E][✗] project meeting (at: Aug 6th 2-4pm)
-You now have 3 remaining task
+You a total of tasks remaining: 3
 ____________________________________________________________
 ____________________________________________________________
 + [T][✗] join sports club
-You now have 4 remaining task
+You a total of tasks remaining: 4
 ____________________________________________________________
-Task: 'read book' marked as completed, well done!
-You have 3 remaining tasks
-We'll get them next time!
+'read book'
+marked as completed, well done!
+You a total of tasks remaining: 3
 ____________________________________________________________
-Task: 'join sports club' marked as completed, well done!
-You have 2 remaining tasks
-We'll get them next time!
+'join sports club'
+marked as completed, well done!
+You a total of tasks remaining: 2
 ____________________________________________________________
 ____________________________________________________________
 + [T][✗] borrow book
-You now have 3 remaining task
+You a total of tasks remaining: 3
 ____________________________________________________________
 1: [T][✓] read book
 2: [D][✗] return book (by: June 6th)
@@ -44,15 +45,15 @@ ____________________________________________________________
 ____________________________________________________________
 ____________________________________________________________
 + [D][✗] return book (by: Sunday)
-You now have 4 remaining task
+You a total of tasks remaining: 4
 ____________________________________________________________
 ____________________________________________________________
 + [E][✗] project meeting  (at: Mon 2-4pm)
-You now have 5 remaining task
+You a total of tasks remaining: 5
 ____________________________________________________________
 ____________________________________________________________
 + [D][✗] do homework  (by: no idea :-p)
-You now have 6 remaining task
+You a total of tasks remaining: 6
 ____________________________________________________________
 1: [T][✓] read book
 2: [D][✗] return book (by: June 6th)
@@ -65,9 +66,9 @@ ____________________________________________________________
 ____________________________________________________________
 That Task does not exist!
 ____________________________________________________________
-Task: 'do homework' marked as completed, well done!
-You have 5 remaining tasks
-We'll get them next time!
+'do homework'
+marked as completed, well done!
+You a total of tasks remaining: 5
 ____________________________________________________________
 1: [T][✓] read book
 2: [D][✗] return book (by: June 6th)
