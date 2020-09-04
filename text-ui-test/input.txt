@@ -13,4 +13,8 @@ list
 done 9
 done 8
 list
+todo
+done
+event
+list
 bye
