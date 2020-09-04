@@ -59,6 +59,7 @@ public class Duke {
             + "What can I do for you?";
     private static final String MESSAGE_INVALID_OPTION = "Invalid option, Try again!"
             + System.lineSeparator();
+    private static final String ERROR_MESSAGE_NO_INFO = "Error: Please provide more information!";
 
     /**
      * Main entry point of the application
@@ -76,12 +77,13 @@ public class Duke {
 
     /**
      * Returns the raw user input into processed parts for execution based on found keywords
+     *
      * @param userInput raw input from user
      * @return processedInputs String array with the input in parts as follows
      * processedInputs[0] the processed Command e.g COMMAND_DONE, COMMAND_TODO, ...
      * processedInputs[1] taskName e.g 'borrow book' or 1 (taskID for done commands)
      * processedInputs[2] = taskParameter, e.g 'Sunday', 'Mon 2pm-4pm'
-     **/
+     */
     private static String[] processInput(String userInput) {
         String[] inputParts = userInput.trim().split(RAW_COMMAND_DELIMIT, SPLIT_INPUT_LIMIT);
         switch (inputParts[0]) {
@@ -101,6 +103,7 @@ public class Duke {
 
     /**
      * Returns the split inputParts into 3 distinct data: Command, Task name, Task Parameters
+     *
      * @param inputParts Separated user input into 2 parts by the first spacing
      * @param splitBy The delimiter option to process the 2nd half of the user input
      * @param taskType The identified type of the COMMAND
@@ -110,22 +113,20 @@ public class Duke {
         String userInput;
         String taskName = INIT_STRING;
         String taskParameter = INIT_STRING;
-        if (inputParts.length > 1) {
+        try {
             taskName = inputParts[1];
             userInput = taskType;
 
             //Perform additional splicing if event types are deadline or event
             if (taskType.equals(COMMAND_DEADLINE) || taskType.equals(COMMAND_EVENT)) {
                 String[] dateParts = inputParts[1].trim().split(splitBy, SPLIT_INPUT_LIMIT);
-                //Input validation check
-                if (dateParts.length > 1) {
-                    taskName = dateParts[0];
-                    taskParameter = dateParts[1];
-                } else {
-                    userInput = INVALID_OPTION;
-                }
+                taskName = dateParts[0];
+                taskParameter = dateParts[1];
             }
-        } else {
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            //Catches out of bounds for two different splicing
+            System.out.println(ERROR_MESSAGE_NO_INFO);
             userInput = INVALID_OPTION;
         }
         return new String[]{ userInput, taskName, taskParameter };
@@ -133,6 +134,7 @@ public class Duke {
 
     /**
      * Returns True or False after it takes the processed input and executes the command.
+     *
      * @param processedInputs An array of the processed user input
      * @return boolean Returns false if COMMAND_BYE to terminate the program
      */
@@ -171,6 +173,7 @@ public class Duke {
 
     /**
      * Checks the task to complete, and completes it if it is a valid task.
+     *
      * @param taskIDInString Processed input that identifies the task to complete
      */
     private static void completeTask(String taskIDInString) {
@@ -198,6 +201,7 @@ public class Duke {
 
     /**
      * Takes the new Tasks (Todos, Deadlines, Events) and adds it to the tasks ArrayList
+     *
      * @param newTask Takes in as Task object, but in reality it is a subclass.
      */
     private static void addTask(Task newTask) {
@@ -224,6 +228,7 @@ public class Duke {
 
     /**
      * Takes the raw user input from the next line
+     *
      * @return the raw user input
      */
     private static String getUserInput() {
