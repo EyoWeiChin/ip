@@ -1,12 +1,14 @@
+package duke.task;
+
 public class Task {
-    //Task attribute
+    //duke.task.Task attribute
     private boolean isCompleted;
     private String taskName;
 
     //Class Level Attribute
     private static int totalTasks = 0;
 
-    //Task Constructor
+    //duke.task.Task Constructor
     public Task(String taskName) {
         this.isCompleted = false;
         this.taskName = taskName;
