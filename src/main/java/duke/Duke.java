@@ -1,3 +1,10 @@
+package duke;
+
+import duke.task.Deadline;
+import duke.task.Event;
+import duke.task.Task;
+import duke.task.Todo;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -102,7 +109,7 @@ public class Duke {
     }
 
     /**
-     * Returns the split inputParts into 3 distinct data: Command, Task name, Task Parameters
+     * Returns the split inputParts into 3 distinct data: Command, duke.task.Task name, duke.task.Task Parameters
      *
      * @param inputParts Separated user input into 2 parts by the first spacing
      * @param splitBy The delimiter option to process the 2nd half of the user input
@@ -202,7 +209,7 @@ public class Duke {
     /**
      * Takes the new Tasks (Todos, Deadlines, Events) and adds it to the tasks ArrayList
      *
-     * @param newTask Takes in as Task object, but in reality it is a subclass.
+     * @param newTask Takes in as duke.task.Task object, but in reality it is a subclass.
      */
     private static void addTask(Task newTask) {
         tasks.add(newTask);
