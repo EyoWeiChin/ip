@@ -205,6 +205,7 @@ public class Duke {
             break;
         case COMMAND_DELETE:
             deleteTask(taskName);
+            saveTaskList();
             break;
         default:
             printInvalidMessage();
@@ -213,6 +214,10 @@ public class Duke {
         return true;
     }
 
+    /**
+     * Finds and delete the task from the Arraylist
+     * @param taskToDelete is the task id to delete
+     */
     private static void deleteTask(String taskToDelete) {
         int taskToDeleteInt = Integer.parseInt(taskToDelete) - 1;
         if (taskToDeleteInt < 0 || taskToDeleteInt >= tasks.size()) {
