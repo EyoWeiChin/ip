@@ -22,6 +22,9 @@ public class Duke {
     private static final String RAW_COMMAND_DELIMIT = " ";
     private static final int SPLIT_INPUT_LIMIT = 2;
 
+    private static final String COMMAND_DELETE = "delete";
+    private static final String DELIMIT_DELETE = "";
+
     private static final String COMMAND_TODO = "todo";
     private static final String DELIMIT_TODO = "";
 
@@ -67,6 +70,7 @@ public class Duke {
     private static final String MESSAGE_INVALID_OPTION = "Invalid option, Try again!"
             + System.lineSeparator();
     private static final String ERROR_MESSAGE_NO_INFO = "Error: Please provide more information!";
+    private static final String MESSAGE_REMOVED_TASK = "Noted! I have removed the task:";
 
     /**
      * Main entry point of the application
@@ -102,6 +106,8 @@ public class Duke {
             return splitInputToParts(inputParts, DELIMIT_DEADLINE, COMMAND_DEADLINE);
         case COMMAND_EVENT:
             return splitInputToParts(inputParts, DELIMIT_EVENT, COMMAND_EVENT);
+        case COMMAND_DELETE:
+            return splitInputToParts(inputParts, DELIMIT_DELETE, COMMAND_DELETE);
         default:
             //Catch List and Bye commands that need no processing
             return new String[]{ inputParts[0], INIT_STRING, INIT_STRING };
@@ -109,7 +115,7 @@ public class Duke {
     }
 
     /**
-     * Returns the split inputParts into 3 distinct data: Command, duke.task.Task name, duke.task.Task Parameters
+     * Returns the split inputParts into 3 distinct data: Command, Task name, Task Parameters
      *
      * @param inputParts Separated user input into 2 parts by the first spacing
      * @param splitBy The delimiter option to process the 2nd half of the user input
@@ -171,11 +177,28 @@ public class Duke {
         case COMMAND_DONE:
             completeTask(taskName);
             break;
+        case COMMAND_DELETE:
+            deleteTask(taskName);
+            break;
         default:
             printInvalidMessage();
             break;
         }
         return true;
+    }
+
+    private static void deleteTask(String taskToDelete) {
+        int taskToDeleteInt = Integer.parseInt(taskToDelete) - 1;
+        if (taskToDeleteInt < 0 || taskToDeleteInt >= tasks.size()) {
+            System.out.println(MESSAGE_NO_SUCH_TASK);
+        } else if (Task.getTotalTasks() == 0) {
+            System.out.println(MESSAGE_NO_REMAINING_TASKS);
+        } else {
+            System.out.println(MESSAGE_REMOVED_TASK);
+            System.out.println(tasks.get(taskToDeleteInt));
+            System.out.println(SINGLE_LINE);
+            tasks.remove(tasks.get(taskToDeleteInt));
+        }
     }
 
     /**
@@ -209,7 +232,7 @@ public class Duke {
     /**
      * Takes the new Tasks (Todos, Deadlines, Events) and adds it to the tasks ArrayList
      *
-     * @param newTask Takes in as duke.task.Task object, but in reality it is a subclass.
+     * @param newTask Takes in as Task object, but in reality it is a subclass.
      */
     private static void addTask(Task newTask) {
         tasks.add(newTask);
