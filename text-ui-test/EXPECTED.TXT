@@ -97,6 +97,31 @@ Invalid option, Try again!
 7: [E][✗] project meeting  (at: Mon 2-4pm)
 8: [D][✓] do homework  (by: no idea :-p)
 ____________________________________________________________
+Noted! I have removed the task:
+[T][✓] read book
+____________________________________________________________
+1: [D][✗] return book (by: June 6th)
+2: [E][✗] project meeting (at: Aug 6th 2-4pm)
+3: [T][✓] join sports club
+4: [T][✗] borrow book
+5: [D][✗] return book (by: Sunday)
+6: [E][✗] project meeting  (at: Mon 2-4pm)
+7: [D][✓] do homework  (by: no idea :-p)
+____________________________________________________________
+That Task does not exist!
+Error: Please provide more information!
+Invalid option, Try again!
+
+Noted! I have removed the task:
+[D][✓] do homework  (by: no idea :-p)
+____________________________________________________________
+1: [D][✗] return book (by: June 6th)
+2: [E][✗] project meeting (at: Aug 6th 2-4pm)
+3: [T][✓] join sports club
+4: [T][✗] borrow book
+5: [D][✗] return book (by: Sunday)
+6: [E][✗] project meeting  (at: Mon 2-4pm)
+____________________________________________________________
 ____________________________________________________________
 Bye! Hope to see you again soon!
 ____________________________________________________________

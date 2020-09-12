@@ -17,4 +17,10 @@ todo
 done
 event
 list
+delete 1
+list
+delete 8
+delete
+delete 7
+list
 bye
