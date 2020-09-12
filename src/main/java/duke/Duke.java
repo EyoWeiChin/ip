@@ -43,6 +43,18 @@ public class Duke {
     private static final String INVALID_OPTION = "invalid";
     private static final String INIT_STRING = "";
 
+    //Constant Variables for Save / Load logic
+    private static final String DELIMIT_SAVE_FILE = " | ";
+    private static final String DELIMIT_SAVE_FILE_REGEX = "\\|";
+    private static final int SPLIT_SAVE_LIMIT = 5;
+
+    private static final String SAVE_TODO = "T";
+    private static final String SAVE_DEADLINE = "D";
+    private static final String SAVE_EVENT = "E";
+
+    private static final String SAVE_COMPLETED_TASK = "1";
+    private static final String SAVE_NOT_COMPLETED_TASK = "0";
+
     /**
      * ArrayList of all Tasks
      */
@@ -52,6 +64,12 @@ public class Duke {
      * Declare scanner to read from I/O
      */
     private static final Scanner SCANNER = new Scanner(System.in);
+
+    /**
+     * Declare file paths for saving and loading
+     */
+    private static final File SAVE_FILE = new File("data/duke.txt");
+    private static final File DATA_FOLDER = new File("data");
 
     /**
      * Declare Messages to be used by Duke here.
@@ -70,6 +88,12 @@ public class Duke {
     private static final String MESSAGE_INVALID_OPTION = "Invalid option, Try again!"
             + System.lineSeparator();
     private static final String ERROR_MESSAGE_NO_INFO = "Error: Please provide more information!";
+    private static final String ERROR_CANNOT_WRITE = "Unable to write to file: ";
+    private static final String MESSAGE_CREATED_FOLDER = "Data folder created!";
+    private static final String MESSAGE_SUCCESSFUL_LOAD = "Save file loaded! Added the following tasks:";
+    private static final String ERROR_DUPLICATE_SAVE = "Save file already exists!";
+    private static final String MESSAGE_CREATED_SAVE_FILE = "Save file created!";
+
 
     /**
      * Main entry point of the application
@@ -127,14 +151,12 @@ public class Duke {
         try {
             taskName = inputParts[1];
             userInput = taskType;
-
             //Perform additional splicing if event types are deadline or event
             if (taskType.equals(COMMAND_DEADLINE) || taskType.equals(COMMAND_EVENT)) {
                 String[] dateParts = inputParts[1].trim().split(splitBy, SPLIT_INPUT_LIMIT);
                 taskName = dateParts[0];
                 taskParameter = dateParts[1];
             }
-
         } catch (ArrayIndexOutOfBoundsException e) {
             //Catches out of bounds for two different splicing
             System.out.println(ERROR_MESSAGE_NO_INFO);
@@ -183,89 +205,100 @@ public class Duke {
         return true;
     }
 
-    private static void loadTaskList() {
-        //Check data Folder exist
-        File dataFolder = new File("data");
-        File saveFile = new File("data/duke.txt");
-        if (!dataFolder.exists()) {
-            dataFolder.mkdir();
-            System.out.println("Data folder created!");
-        }
-        try {
-            Scanner fileScanner = new Scanner(saveFile);
-            while(fileScanner.hasNext()) {
-                String currentLine = fileScanner.nextLine();
-                String[] stringParts = currentLine.split("-", 5);
-                switch (stringParts[1].trim()) {
-                case "T":
-                    Task loadTodo = new Todo(stringParts[2].trim());
-                    if(stringParts[0].trim().equals("1")){
-                        loadTodo.setCompleted(true);
-                    }
-                    tasks.add(loadTodo);
-                    break;
-                case "D":
-                    Task loadDeadline = new Deadline(stringParts[2].trim(), stringParts[3].trim());
-                    if(stringParts[0].trim().equals("1")){
-                        loadDeadline.setCompleted(true);
-                    }
-                    tasks.add(loadDeadline);
-                    break;
-                case "E":
-                    Task loadEvent = new Event(stringParts[2].trim(), stringParts[3].trim());
-                    if(stringParts[0].trim().equals("1")){
-                        loadEvent.setCompleted(true);
-                    }
-                    tasks.add(loadEvent);
-                    break;
-                default:
-                    break;
+    /**
+     * Reads the saved file and adds the saved data to the data structure.
+     *
+     * @throws java.io.FileNotFoundException if SAVE_FILE does not exist
+     */
+    private static void savedFileReader() throws java.io.FileNotFoundException {
+        Scanner fileScanner = new Scanner(SAVE_FILE);
+        while(fileScanner.hasNext()) {
+            String currentLine = fileScanner.nextLine();
+            String[] stringParts = currentLine.split(DELIMIT_SAVE_FILE_REGEX, SPLIT_SAVE_LIMIT);
+            switch (stringParts[1].trim()) {
+            case SAVE_TODO:
+                Task loadTodo = new Todo(stringParts[2].trim());
+                if (stringParts[0].trim().equals(SAVE_COMPLETED_TASK)) {
+                    loadTodo.setCompleted(true);
                 }
-            }
-            if (tasks.size() > 0) {
-                System.out.println("Save file loaded! Added the following tasks:");
-                listAllTasks();
-            }
-        } catch (java.io.FileNotFoundException notFoundExcept) {
-            try {
-                saveFile.createNewFile();
-                System.out.println("Save file created!");
-            } catch (java.io.IOException existExcept) {
-                System.out.println("Save file already exists!");
+                tasks.add(loadTodo);
+                break;
+            case SAVE_DEADLINE:
+                Task loadDeadline = new Deadline(stringParts[2].trim(), stringParts[3].trim());
+                if (stringParts[0].trim().equals(SAVE_COMPLETED_TASK)) {
+                    loadDeadline.setCompleted(true);
+                }
+                tasks.add(loadDeadline);
+                break;
+            case SAVE_EVENT:
+                Task loadEvent = new Event(stringParts[2].trim(), stringParts[3].trim());
+                if (stringParts[0].trim().equals(SAVE_COMPLETED_TASK)) {
+                    loadEvent.setCompleted(true);
+                }
+                tasks.add(loadEvent);
+                break;
+            default:
+                break;
             }
         }
     }
 
-    private static void saveTaskList() {
-        //Check data Folder exist
-        File saveFile = new File("data/duke.txt");
-        String saveString = INIT_STRING;
-        for (Task saveTask: tasks) {
-            if (saveTask.isCompleted()) {
-                saveString += "1" + " - ";
-            } else {
-                saveString += "0" + " - ";
-            }
-            if (saveTask instanceof Todo) {
-                saveString += "T" + " - ";
-                saveString += saveTask.getTaskName() + " - ";
-            } else if (saveTask instanceof Deadline) {
-                saveString += "D" + " - ";
-                saveString += saveTask.getTaskName() + " - ";
-                saveString += ((Deadline) saveTask).getDueTime() + " - ";
-            } else if (saveTask instanceof Event) {
-                saveString += "E" + " - ";
-                saveString += saveTask.getTaskName() + " - ";
-                saveString += ((Event) saveTask).getDuration() + " - ";
-            }
-            saveString += System.lineSeparator();
+    /**
+     * Checks if save folder and save file exists, if not create them.
+     * If they exist, call savedFileReader() to read it.
+     */
+    private static void loadTaskList() {
+        if (!DATA_FOLDER.exists()) {
+            DATA_FOLDER.mkdir();
+            System.out.println(MESSAGE_CREATED_FOLDER);
         }
         try {
-            FileWriter fw = new FileWriter(saveFile);
-            fw.write(saveString);
+            savedFileReader();
+        } catch (java.io.FileNotFoundException notFoundExcept) {
+            try {
+                //Create the save file if exception was thrown
+                SAVE_FILE.createNewFile();
+                System.out.println(MESSAGE_CREATED_SAVE_FILE);
+            } catch (java.io.IOException existExcept) {
+                System.out.println(ERROR_DUPLICATE_SAVE + existExcept);
+            }
+        }
+        //Print the added task if any
+        if (tasks.size() > 0) {
+            System.out.println(MESSAGE_SUCCESSFUL_LOAD);
+            listAllTasks();
+        }
+    }
+
+    private static void saveTaskList() {
+        StringBuilder saveString = new StringBuilder(INIT_STRING);
+        //Loop through the Task ArrayList and build the string to save
+        for (Task saveTask: tasks) {
+            if (saveTask.isCompleted()) {
+                saveString.append(SAVE_COMPLETED_TASK + DELIMIT_SAVE_FILE);
+            } else {
+                saveString.append(SAVE_NOT_COMPLETED_TASK + DELIMIT_SAVE_FILE);
+            }
+            if (saveTask instanceof Todo) {
+                saveString.append(SAVE_TODO + DELIMIT_SAVE_FILE);
+                saveString.append(saveTask.getTaskName()).append(DELIMIT_SAVE_FILE);
+            } else if (saveTask instanceof Deadline) {
+                saveString.append(SAVE_DEADLINE + DELIMIT_SAVE_FILE);
+                saveString.append(saveTask.getTaskName()).append(DELIMIT_SAVE_FILE);
+                saveString.append(((Deadline) saveTask).getDueTime()).append(DELIMIT_SAVE_FILE);
+            } else if (saveTask instanceof Event) {
+                saveString.append(SAVE_EVENT + DELIMIT_SAVE_FILE);
+                saveString.append(saveTask.getTaskName()).append(DELIMIT_SAVE_FILE);
+                saveString.append(((Event) saveTask).getDuration()).append(DELIMIT_SAVE_FILE);
+            }
+            saveString.append(System.lineSeparator());
+        }
+        try {
+            FileWriter fw = new FileWriter(SAVE_FILE);
+            fw.write(saveString.toString());
             fw.close();
         } catch (IOException e) {
-            System.out.println("Unable to write to file: " + e.getMessage());
+            System.out.println(ERROR_CANNOT_WRITE + e.getMessage());
         }
     }
 
