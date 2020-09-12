@@ -5,6 +5,9 @@ import duke.task.Event;
 import duke.task.Task;
 import duke.task.Todo;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -74,6 +77,7 @@ public class Duke {
      */
     public static void main(String[] args) {
         printWelcomeScreen();
+        loadTaskList();
         //Interaction Component
         boolean stillInteracting = true;
         while (stillInteracting) {
@@ -157,25 +161,112 @@ public class Duke {
             listAllTasks();
             break;
         case COMMAND_TODO:
-            Todo newTodo = new Todo(taskName);
-            addTask(newTodo);
+            addTask(new Todo(taskName));
+            saveTaskList();
             break;
         case COMMAND_DEADLINE:
-            Deadline newDeadLine = new Deadline(taskName, taskParameter);
-            addTask(newDeadLine);
+            addTask(new Deadline(taskName, taskParameter));
+            saveTaskList();
             break;
         case COMMAND_EVENT:
-            Event newEvent = new Event(taskName, taskParameter);
-            addTask(newEvent);
+            addTask(new Event(taskName, taskParameter));
+            saveTaskList();
             break;
         case COMMAND_DONE:
             completeTask(taskName);
+            saveTaskList();
             break;
         default:
             printInvalidMessage();
             break;
         }
         return true;
+    }
+
+    private static void loadTaskList() {
+        //Check data Folder exist
+        File dataFolder = new File("data");
+        File saveFile = new File("data/duke.txt");
+        if (!dataFolder.exists()) {
+            dataFolder.mkdir();
+            System.out.println("Data folder created!");
+        }
+        try {
+            Scanner fileScanner = new Scanner(saveFile);
+            while(fileScanner.hasNext()) {
+                String currentLine = fileScanner.nextLine();
+                String[] stringParts = currentLine.split("-", 5);
+                switch (stringParts[1].trim()) {
+                case "T":
+                    Task loadTodo = new Todo(stringParts[2].trim());
+                    if(stringParts[0].trim().equals("1")){
+                        loadTodo.setCompleted(true);
+                    }
+                    tasks.add(loadTodo);
+                    break;
+                case "D":
+                    Task loadDeadline = new Deadline(stringParts[2].trim(), stringParts[3].trim());
+                    if(stringParts[0].trim().equals("1")){
+                        loadDeadline.setCompleted(true);
+                    }
+                    tasks.add(loadDeadline);
+                    break;
+                case "E":
+                    Task loadEvent = new Event(stringParts[2].trim(), stringParts[3].trim());
+                    if(stringParts[0].trim().equals("1")){
+                        loadEvent.setCompleted(true);
+                    }
+                    tasks.add(loadEvent);
+                    break;
+                default:
+                    break;
+                }
+            }
+            if (tasks.size() > 0) {
+                System.out.println("Save file loaded! Added the following tasks:");
+                listAllTasks();
+            }
+        } catch (java.io.FileNotFoundException notFoundExcept) {
+            try {
+                saveFile.createNewFile();
+                System.out.println("Save file created!");
+            } catch (java.io.IOException existExcept) {
+                System.out.println("Save file already exists!");
+            }
+        }
+    }
+
+    private static void saveTaskList() {
+        //Check data Folder exist
+        File saveFile = new File("data/duke.txt");
+        String saveString = INIT_STRING;
+        for (Task saveTask: tasks) {
+            if (saveTask.isCompleted()) {
+                saveString += "1" + " - ";
+            } else {
+                saveString += "0" + " - ";
+            }
+            if (saveTask instanceof Todo) {
+                saveString += "T" + " - ";
+                saveString += saveTask.getTaskName() + " - ";
+            } else if (saveTask instanceof Deadline) {
+                saveString += "D" + " - ";
+                saveString += saveTask.getTaskName() + " - ";
+                saveString += ((Deadline) saveTask).getDueTime() + " - ";
+            } else if (saveTask instanceof Event) {
+                saveString += "E" + " - ";
+                saveString += saveTask.getTaskName() + " - ";
+                saveString += ((Event) saveTask).getDuration() + " - ";
+            }
+            saveString += System.lineSeparator();
+        }
+        try {
+            FileWriter fw = new FileWriter(saveFile);
+            fw.write(saveString);
+            fw.close();
+        } catch (IOException e) {
+            System.out.println("Unable to write to file: " + e.getMessage());
+        }
     }
 
     /**
