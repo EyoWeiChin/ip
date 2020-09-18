@@ -59,11 +59,6 @@ public class Duke {
     private static final String SAVE_NOT_COMPLETED_TASK = "0";
 
     /**
-     * ArrayList of all Tasks
-     */
-    private static final ArrayList<Task> tasks = new ArrayList<>();
-
-    /**
      * Declare scanner to read from I/O
      */
     private static final Scanner SCANNER = new Scanner(System.in);
@@ -100,16 +95,17 @@ public class Duke {
 
     /**
      * Main entry point of the application
-     * Greets the User and begins User interaction
+     * Greets the User, loads the save file and begins User interaction
      */
     public static void main(String[] args) {
+        ArrayList<Task> tasks = new ArrayList<>();
         printWelcomeScreen();
-        loadTaskList();
+        loadTaskList(tasks);
         //Interaction Component
         boolean stillInteracting = true;
         while (stillInteracting) {
             String[] processedInputs = processInput(getUserInput());
-            stillInteracting = executeCommand(processedInputs);
+            stillInteracting = executeCommand(processedInputs, tasks);
         }
     }
 
@@ -176,7 +172,7 @@ public class Duke {
      * @param processedInputs An array of the processed user input
      * @return boolean Returns false if COMMAND_BYE to terminate the program
      */
-    private static boolean executeCommand(String[] processedInputs) {
+    private static boolean executeCommand(String[] processedInputs, ArrayList<Task> tasks) {
         String userInput = processedInputs[0];
         String taskName = processedInputs[1];
         String taskParameter = processedInputs[2];
@@ -185,27 +181,27 @@ public class Duke {
             printExitMessage();
             return false;
         case COMMAND_LIST:
-            listAllTasks();
+            listAllTasks(tasks);
             break;
         case COMMAND_TODO:
-            addTask(new Todo(taskName));
-            saveTaskList();
+            addTask(new Todo(taskName), tasks);
+            saveTaskList(tasks);
             break;
         case COMMAND_DEADLINE:
-            addTask(new Deadline(taskName, taskParameter));
-            saveTaskList();
+            addTask(new Deadline(taskName, taskParameter), tasks);
+            saveTaskList(tasks);
             break;
         case COMMAND_EVENT:
-            addTask(new Event(taskName, taskParameter));
-            saveTaskList();
+            addTask(new Event(taskName, taskParameter), tasks);
+            saveTaskList(tasks);
             break;
         case COMMAND_DONE:
-            completeTask(taskName);
-            saveTaskList();
+            completeTask(taskName, tasks);
+            saveTaskList(tasks);
             break;
         case COMMAND_DELETE:
-            deleteTask(taskName);
-            saveTaskList();
+            deleteTask(taskName, tasks);
+            saveTaskList(tasks);
             break;
         default:
             printInvalidMessage();
@@ -218,12 +214,10 @@ public class Duke {
      * Finds and delete the task from the Arraylist
      * @param taskToDelete is the task id to delete
      */
-    private static void deleteTask(String taskToDelete) {
+    private static void deleteTask(String taskToDelete, ArrayList<Task> tasks) {
         int taskToDeleteInt = Integer.parseInt(taskToDelete) - 1;
         if (taskToDeleteInt < 0 || taskToDeleteInt >= tasks.size()) {
             System.out.println(MESSAGE_NO_SUCH_TASK);
-        } else if (Task.getTotalTasks() == 0) {
-            System.out.println(MESSAGE_NO_REMAINING_TASKS);
         } else {
             System.out.println(MESSAGE_REMOVED_TASK);
             System.out.println(tasks.get(taskToDeleteInt));
@@ -237,7 +231,7 @@ public class Duke {
      *
      * @throws java.io.FileNotFoundException if SAVE_FILE does not exist
      */
-    private static void savedFileReader() throws java.io.FileNotFoundException {
+    private static void savedFileReader(ArrayList<Task> tasks) throws java.io.FileNotFoundException {
         Scanner fileScanner = new Scanner(SAVE_FILE);
         while(fileScanner.hasNext()) {
             String currentLine = fileScanner.nextLine();
@@ -274,18 +268,19 @@ public class Duke {
      * Checks if save folder and save file exists, if not create them.
      * If they exist, call savedFileReader() to read it.
      */
-    private static void loadTaskList() {
+    private static void loadTaskList(ArrayList<Task> tasks) {
         if (!DATA_FOLDER.exists()) {
             DATA_FOLDER.mkdir();
             System.out.println(MESSAGE_CREATED_FOLDER);
         }
         try {
-            savedFileReader();
+            savedFileReader(tasks);
         } catch (java.io.FileNotFoundException notFoundExcept) {
             try {
                 //Create the save file if exception was thrown
                 SAVE_FILE.createNewFile();
                 System.out.println(MESSAGE_CREATED_SAVE_FILE);
+                System.out.println(SINGLE_LINE);
             } catch (java.io.IOException existExcept) {
                 System.out.println(ERROR_DUPLICATE_SAVE + existExcept);
             }
@@ -293,11 +288,11 @@ public class Duke {
         //Print the added task if any
         if (tasks.size() > 0) {
             System.out.println(MESSAGE_SUCCESSFUL_LOAD);
-            listAllTasks();
+            listAllTasks(tasks);
         }
     }
 
-    private static void saveTaskList() {
+    private static void saveTaskList(ArrayList<Task> tasks) {
         StringBuilder saveString = new StringBuilder(INIT_STRING);
         //Loop through the Task ArrayList and build the string to save
         for (Task saveTask: tasks) {
@@ -334,7 +329,7 @@ public class Duke {
      *
      * @param taskIDInString Processed input that identifies the task to complete
      */
-    private static void completeTask(String taskIDInString) {
+    private static void completeTask(String taskIDInString, ArrayList<Task> tasks) {
         // Change from String to Integer then 0-base to 1-base indexing by deducting 1
         int taskIDToFinish = Integer.parseInt(taskIDInString) - 1;
         if (taskIDToFinish < 0 || taskIDToFinish >= tasks.size()) {
@@ -362,7 +357,7 @@ public class Duke {
      *
      * @param newTask Takes in as Task object, but in reality it is a subclass.
      */
-    private static void addTask(Task newTask) {
+    private static void addTask(Task newTask, ArrayList<Task> tasks) {
         tasks.add(newTask);
         System.out.println(SINGLE_LINE);
         System.out.println("+ " + newTask);
@@ -373,7 +368,7 @@ public class Duke {
     /**
      * Prints all Tasks stored in the tasks ArrayList
      */
-    private static void listAllTasks() {
+    private static void listAllTasks(ArrayList<Task> tasks) {
         if (tasks.size() == 0) {
             System.out.println(MESSAGE_NO_TASKS_DUE);
         } else {
