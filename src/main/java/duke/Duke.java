@@ -7,10 +7,9 @@ import duke.ui.TextUI;
 
 public class Duke {
 
-    private TextUI ui;
+    private final TextUI ui;
     private SaveManager saveManager;
     private TaskList tasks;
-    private Parser mainParser;
 
     /**
      * Main entry point of the application
@@ -23,8 +22,14 @@ public class Duke {
     public Duke(String filePath) {
         //Initialize starting resources
         ui = new TextUI();
-        SaveManager saveManager = new SaveManager(filePath);
-        TaskList tasks = new TaskList();
+        this.saveManager = new SaveManager(filePath);
+        try {
+            this.tasks = saveManager.loadTaskList();
+        } catch (DukeException fileReadError) {
+            ui.printErrorMessage(fileReadError);
+            this.tasks = new TaskList();
+        }
+
     }
 
     public void run() {
@@ -35,13 +40,10 @@ public class Duke {
 
     private void loopUntilExitCommand() {
         boolean stillInteracting = true;
-
-        //Interaction Component
         while (stillInteracting) {
             try {
-                //Get User Input and Process it
-                String[] processedInputs = mainParser.processInput();
-                stillInteracting = mainParser.executeCommand(processedInputs, tasks);
+                String[] processedInputs = Parser.processInput();
+                stillInteracting = Parser.executeCommand(processedInputs, tasks);
             } catch (DukeException e) {
                 ui.printErrorMessage(e);
             } finally {
@@ -52,7 +54,6 @@ public class Duke {
 
     private void start() {
         ui.printWelcomeScreen();
-        saveManager.loadTaskList(tasks);
     }
 
     private void exit() {

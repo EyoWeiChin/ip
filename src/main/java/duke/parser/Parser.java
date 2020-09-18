@@ -7,6 +7,7 @@ import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.TaskList;
 import duke.task.Todo;
+import duke.ui.TextUI;
 
 import java.util.Scanner;
 
@@ -28,11 +29,6 @@ public class Parser {
     protected static final String COMMAND_LIST = "list";
     protected static final String COMMAND_BYE = "bye";
     protected static final String INVALID_OPTION = "invalid";
-
-    /**
-     * Declare scanner to read from I/O
-     */
-    public static final Scanner SCANNER = new Scanner(System.in);
 
     /**
      * Returns the split inputParts into 3 distinct data: Command, Task name, Task Parameters
@@ -73,7 +69,7 @@ public class Parser {
      * processedInputs[2] = taskParameter, e.g 'Sunday', 'Mon 2pm-4pm'
      */
     public static String[] processInput() {
-        String userInput = getUserInput();
+        String userInput = TextUI.getUserInput();
         String[] inputParts = userInput.trim().split(RAW_COMMAND_DELIMIT, SPLIT_INPUT_LIMIT);
         switch (inputParts[0]) {
         case COMMAND_DONE:
@@ -90,15 +86,6 @@ public class Parser {
             //Catch List and Bye commands that need no processing
             return new String[]{ inputParts[0], Messages.INIT_STRING, Messages.INIT_STRING };
         }
-    }
-
-    /**
-     * Takes the raw user input from the next line
-     *
-     * @return the raw user input
-     */
-    public static String getUserInput() {
-        return SCANNER.nextLine();
     }
 
     /**

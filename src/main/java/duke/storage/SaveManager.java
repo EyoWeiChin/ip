@@ -1,11 +1,18 @@
 package duke.storage;
 
+import duke.DukeException;
 import duke.common.Messages;
-import duke.task.*;
+import duke.task.Deadline;
+import duke.task.Event;
+import duke.task.Task;
+import duke.task.TaskList;
+import duke.task.Todo;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 import static duke.task.TaskList.listAllTasks;
@@ -31,47 +38,45 @@ public class SaveManager {
 
     //TODO: Split the filePath in the constructor so that it can use a dynamic DATA_FOLDER
     public SaveManager(String filePath) {
-        this.filePath = new File(filePath);
+        SaveManager.filePath = new File(filePath);
     }
 
     /**
      * Checks if save folder and save file exists, if not create them.
      * If they exist, call savedFileReader() to read it.
      */
-    public static void loadTaskList(TaskList tasks) {
-        if (!DATA_FOLDER.exists()) {
-            DATA_FOLDER.mkdir();
-            System.out.println(Messages.MESSAGE_CREATED_FOLDER);
-        }
+    public static TaskList loadTaskList() throws DukeException {
+        TaskList loadedTasks = new TaskList();
         try {
-            savedFileReader(tasks);
-        } catch (java.io.FileNotFoundException notFoundExcept) {
-            try {
-                //Create the save file if exception was thrown
-                filePath.createNewFile();
-                System.out.println(Messages.MESSAGE_CREATED_SAVE_FILE);
-                System.out.println(Messages.SINGLE_LINE);
-            } catch (java.io.IOException existExcept) {
-                System.out.println(Messages.ERROR_DUPLICATE_SAVE + existExcept);
-            }
+            Files.createDirectories(Paths.get(String.valueOf(DATA_FOLDER)));
+            Files.createFile(Paths.get(String.valueOf(filePath)));
+            throw new DukeException(Messages.MESSAGE_CREATED_SAVE_FILE);
+        } catch (IOException fileExists) {
+            //The actual reading takes place here
+            savedFileReader(loadedTasks);
         }
-        //Print the added task if any
-        if (tasks.getTasks().size() > 0) {
+
+        if (loadedTasks.getTasks().size() > 0) {
             System.out.println(Messages.MESSAGE_SUCCESSFUL_LOAD);
             listAllTasks();
         }
+        return loadedTasks;
     }
 
     /**
      * Reads the saved file and adds the saved data to the data structure.
-     *
-     * @throws java.io.FileNotFoundException if SAVE_FILE does not exist
+     * @param tasks
+     * @throws DukeException
      */
-    private static void savedFileReader(TaskList tasks) throws java.io.FileNotFoundException {
-        Scanner fileScanner = new Scanner(filePath);
+    private static void savedFileReader(TaskList tasks) throws DukeException {
+        Scanner fileScanner;
+        try {
+            fileScanner = new Scanner(filePath);
+        } catch (java.io.FileNotFoundException existExcept) {
+            throw new DukeException(Messages.ERROR_DUPLICATE_SAVE + existExcept);
+        }
         while(fileScanner.hasNext()) {
-            String currentLine = fileScanner.nextLine();
-            String[] stringParts = currentLine.split(DELIMIT_SAVE_FILE_REGEX, SPLIT_SAVE_LIMIT);
+            String[] stringParts = fileScanner.nextLine().split(DELIMIT_SAVE_FILE_REGEX, SPLIT_SAVE_LIMIT);
             switch (stringParts[1].trim()) {
             case SAVE_TODO:
                 Task loadTodo = new Todo(stringParts[2].trim());
@@ -100,6 +105,10 @@ public class SaveManager {
         }
     }
 
+    /**
+     * Saves the current TaskList to a save file in the correct format that can be loaded.
+     * @param tasks
+     */
     public static void saveTaskList(TaskList tasks) {
         StringBuilder saveString = new StringBuilder(Messages.INIT_STRING);
         //Loop through the Task ArrayList and build the string to save

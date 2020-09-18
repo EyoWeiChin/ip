@@ -20,10 +20,9 @@ public class Messages {
     public static final String ERROR_MESSAGE_NO_INFO = "Error: Please provide more information!";
     public static final String MESSAGE_REMOVED_TASK = "Noted! I have removed the task:";
     public static final String ERROR_CANNOT_WRITE = "Unable to write to file: ";
-    public static final String MESSAGE_CREATED_FOLDER = "Data folder created!";
     public static final String MESSAGE_SUCCESSFUL_LOAD = "Save file loaded! Added the following tasks:";
     public static final String ERROR_DUPLICATE_SAVE = "Save file already exists!";
-    public static final String MESSAGE_CREATED_SAVE_FILE = "Save file created!";
+    public static final String MESSAGE_CREATED_SAVE_FILE = "No save file detected! New file was created!";
 
 
     public static final String LOGO = " ____        _" + System.lineSeparator()
