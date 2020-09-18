@@ -8,7 +8,8 @@ import duke.ui.TextUI;
 public class Duke {
 
     private final TextUI ui;
-    private SaveManager saveManager;
+    private final SaveManager saveManager;
+    private final Parser parser;
     private TaskList tasks;
 
     /**
@@ -21,7 +22,8 @@ public class Duke {
 
     public Duke(String filePath) {
         //Initialize starting resources
-        ui = new TextUI();
+        this.ui = new TextUI();
+        this.parser = new Parser();
         this.saveManager = new SaveManager(filePath);
         try {
             this.tasks = saveManager.loadTaskList();
@@ -42,8 +44,8 @@ public class Duke {
         boolean stillInteracting = true;
         while (stillInteracting) {
             try {
-                String[] processedInputs = Parser.processInput();
-                stillInteracting = Parser.executeCommand(processedInputs, tasks);
+                String[] processedInputs = parser.processInput();
+                stillInteracting = parser.executeCommand(processedInputs, tasks, saveManager);
             } catch (DukeException e) {
                 ui.printErrorMessage(e);
             } finally {

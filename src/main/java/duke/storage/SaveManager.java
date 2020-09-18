@@ -15,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-import static duke.task.TaskList.listAllTasks;
 
 public class SaveManager {
     //Constant Variables for Save / Load logic
@@ -34,18 +33,18 @@ public class SaveManager {
     //protected static final File filePath = new File("data/duke.txt");
     protected static final File DATA_FOLDER = new File("data");
 
-    private static File filePath;
+    private File filePath;
 
     //TODO: Split the filePath in the constructor so that it can use a dynamic DATA_FOLDER
     public SaveManager(String filePath) {
-        SaveManager.filePath = new File(filePath);
+        this.filePath = new File(filePath);
     }
 
     /**
      * Checks if save folder and save file exists, if not create them.
      * If they exist, call savedFileReader() to read it.
      */
-    public static TaskList loadTaskList() throws DukeException {
+    public TaskList loadTaskList() throws DukeException {
         TaskList loadedTasks = new TaskList();
         try {
             Files.createDirectories(Paths.get(String.valueOf(DATA_FOLDER)));
@@ -58,7 +57,7 @@ public class SaveManager {
 
         if (loadedTasks.getTasks().size() > 0) {
             System.out.println(Messages.MESSAGE_SUCCESSFUL_LOAD);
-            listAllTasks();
+            loadedTasks.listAllTasks();
         }
         return loadedTasks;
     }
@@ -68,7 +67,7 @@ public class SaveManager {
      * @param tasks
      * @throws DukeException
      */
-    private static void savedFileReader(TaskList tasks) throws DukeException {
+    private void savedFileReader(TaskList tasks) throws DukeException {
         Scanner fileScanner;
         try {
             fileScanner = new Scanner(filePath);
@@ -109,7 +108,7 @@ public class SaveManager {
      * Saves the current TaskList to a save file in the correct format that can be loaded.
      * @param tasks
      */
-    public static void saveTaskList(TaskList tasks) {
+    public void saveTaskList(TaskList tasks) {
         StringBuilder saveString = new StringBuilder(Messages.INIT_STRING);
         //Loop through the Task ArrayList and build the string to save
         for (Task saveTask: tasks.getTasks()) {

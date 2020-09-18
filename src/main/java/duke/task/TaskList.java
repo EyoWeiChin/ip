@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 public class TaskList {
 
-    private static ArrayList<Task> tasks;
+    private final ArrayList<Task> tasks;
 
     public TaskList() {
         tasks = new ArrayList<>();
     }
 
-    public static ArrayList<Task> getTasks() {
+    public ArrayList<Task> getTasks() {
         return tasks;
     }
 
@@ -21,14 +21,14 @@ public class TaskList {
      *
      * @param newTask Takes in as Task object, but in reality it is a subclass.
      */
-    public static void addTask(Task newTask) {
+    public void addTask(Task newTask) {
         tasks.add(newTask);
         System.out.println(Messages.SINGLE_LINE);
         System.out.println("+ " + newTask);
         System.out.println(Messages.MESSAGE_TASKS_LEFT + Task.getTotalTasks());
     }
 
-    public static void loadTask(Task newTask) {
+    public void loadTask(Task newTask) {
         tasks.add(newTask);
     }
 
@@ -36,7 +36,7 @@ public class TaskList {
      * Finds and delete the task from the Arraylist
      * @param taskToDelete is the task id to delete
      */
-    public static void deleteTask(String taskToDelete) {
+    public void deleteTask(String taskToDelete) {
         int taskToDeleteInt = Integer.parseInt(taskToDelete) - 1;
         if (taskToDeleteInt < 0 || taskToDeleteInt >= tasks.size()) {
             System.out.println(Messages.MESSAGE_NO_SUCH_TASK);
@@ -53,7 +53,7 @@ public class TaskList {
      *
      * @param taskIDInString Processed input that identifies the task to complete
      */
-    public static void completeTask(String taskIDInString) {
+    public void completeTask(String taskIDInString) {
         // Change from String to Integer then 0-base to 1-base indexing by deducting 1
         int taskIDToFinish = Integer.parseInt(taskIDInString) - 1;
         if (taskIDToFinish < 0 || taskIDToFinish >= tasks.size()) {
@@ -78,7 +78,7 @@ public class TaskList {
     /**
      * Prints all Tasks stored in the tasks ArrayList
      */
-    public static void listAllTasks() {
+    public void listAllTasks() {
         if (tasks.size() == 0) {
             System.out.println(Messages.MESSAGE_NO_TASKS_DUE);
         } else {

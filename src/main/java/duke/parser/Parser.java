@@ -9,8 +9,6 @@ import duke.task.TaskList;
 import duke.task.Todo;
 import duke.ui.TextUI;
 
-import java.util.Scanner;
-
 public class Parser {
 
     //Constant variables for Command logic
@@ -68,7 +66,7 @@ public class Parser {
      * processedInputs[1] taskName e.g 'borrow book' or 1 (taskID for done commands)
      * processedInputs[2] = taskParameter, e.g 'Sunday', 'Mon 2pm-4pm'
      */
-    public static String[] processInput() {
+    public String[] processInput() {
         String userInput = TextUI.getUserInput();
         String[] inputParts = userInput.trim().split(RAW_COMMAND_DELIMIT, SPLIT_INPUT_LIMIT);
         switch (inputParts[0]) {
@@ -94,7 +92,8 @@ public class Parser {
      * @param processedInputs An array of the processed user input
      * @return boolean Returns false if COMMAND_BYE to terminate the program
      */
-    public static boolean executeCommand(String[] processedInputs, TaskList tasks) throws DukeException {
+    public boolean executeCommand(String[] processedInputs, TaskList tasks, SaveManager saveManager)
+            throws DukeException {
         String userInput = processedInputs[0];
         String taskName = processedInputs[1];
         String taskParameter = processedInputs[2];
@@ -102,27 +101,27 @@ public class Parser {
         case COMMAND_BYE:
             return false;
         case COMMAND_LIST:
-            TaskList.listAllTasks();
+            tasks.listAllTasks();
             break;
         case COMMAND_TODO:
-            TaskList.addTask(new Todo(taskName));
-            SaveManager.saveTaskList(tasks);
+            tasks.addTask(new Todo(taskName));
+            saveManager.saveTaskList(tasks);
             break;
         case COMMAND_DEADLINE:
-            TaskList.addTask(new Deadline(taskName, taskParameter));
-            SaveManager.saveTaskList(tasks);
+            tasks.addTask(new Deadline(taskName, taskParameter));
+            saveManager.saveTaskList(tasks);
             break;
         case COMMAND_EVENT:
-            TaskList.addTask(new Event(taskName, taskParameter));
-            SaveManager.saveTaskList(tasks);
+            tasks.addTask(new Event(taskName, taskParameter));
+            saveManager.saveTaskList(tasks);
             break;
         case COMMAND_DONE:
-            TaskList.completeTask(taskName);
-            SaveManager.saveTaskList(tasks);
+            tasks.completeTask(taskName);
+            saveManager.saveTaskList(tasks);
             break;
         case COMMAND_DELETE:
-            TaskList.deleteTask(taskName);
-            SaveManager.saveTaskList(tasks);
+            tasks.deleteTask(taskName);
+            saveManager.saveTaskList(tasks);
             break;
         default:
             throw new DukeException(Messages.MESSAGE_INVALID_OPTION);

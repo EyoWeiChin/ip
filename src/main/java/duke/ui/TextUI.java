@@ -12,25 +12,17 @@ public class TextUI {
      * Declare scanner and print stream to handle I/O
      */
     private static Scanner in;
-    private static PrintStream out;
+    private final PrintStream out;
 
     public TextUI() {
-        this.in = new Scanner(System.in);
-        this.out = new PrintStream(System.out);
-    }
-
-    /**
-     * Prints the parameter and a new line
-     * @param printThis
-     */
-    public static void printString(String printThis) {
-        out.println(printThis);
+        in = new Scanner(System.in);
+        out = new PrintStream(System.out);
     }
 
     /**
      * Prints the welcome message
      */
-    public static void printWelcomeScreen() {
+    public void printWelcomeScreen() {
         out.println(Messages.SINGLE_LINE);
         out.println(Messages.LOGO);
         out.println(Messages.MESSAGE_GREETING);
@@ -41,7 +33,7 @@ public class TextUI {
     /**
      * Prints the exit message
      */
-    public static void printExitMessage() {
+    public void printExitMessage() {
         out.println(Messages.SINGLE_LINE);
         out.println(Messages.MESSAGE_GOODBYE);
         out.println(Messages.SINGLE_LINE);
@@ -50,14 +42,14 @@ public class TextUI {
     /**
      *  Prints a single straight line and a newline
      */
-    public static void printSingleLine() {
+    public void printSingleLine() {
         out.println(Messages.SINGLE_LINE);
     }
 
     /**
      * Prints the error caused
      */
-    public static void printErrorMessage(DukeException e) {
+    public void printErrorMessage(DukeException e) {
         out.println(e);
     }
 
