@@ -8,12 +8,13 @@ public class Event extends Task {
         this.duration = duration;
     }
 
-    public String getDuration() {
-        return duration;
-    }
-
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public String getDueTime() {
+        return duration;
     }
 
     @Override

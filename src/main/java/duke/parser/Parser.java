@@ -23,6 +23,8 @@ public class Parser {
     protected static final String COMMAND_BYE = "bye";
     protected static final String COMMAND_FIND = "find";
     protected static final String DELIMIT_FIND = "";
+    protected static final String COMMAND_DUE = "due";
+    protected static final String DELIMIT_DUE = "";
 
 
     /**
@@ -56,6 +58,9 @@ public class Parser {
         case COMMAND_FIND:
             commandParts = splitInputToParts(inputParts, DELIMIT_FIND, COMMAND_FIND);
             return new FindCommand(commandParts[1]);
+        case COMMAND_DUE:
+            commandParts = splitInputToParts(inputParts, DELIMIT_DUE, COMMAND_DUE);
+            return new DueCommand(commandParts[1]);
         default:
             throw new DukeException(Messages.ERROR_MESSAGE_NO_INFO);
         }

@@ -8,12 +8,13 @@ public class Deadline extends Task {
         this.dueTime = dueTime;
     }
 
-    public String getDueTime() {
-        return dueTime;
-    }
-
     public void setDueTime(String dueTime) {
         this.dueTime = dueTime;
+    }
+
+    @Override
+    public String getDueTime() {
+        return dueTime;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package duke.task;
 
 public class Task {
+    private static final String NO_DUE_DATE = "";
     //duke.task.Task attribute
     private boolean isCompleted;
     private String taskName;
@@ -13,6 +14,10 @@ public class Task {
         this.isCompleted = false;
         this.taskName = taskName;
         totalTasks += 1;
+    }
+
+    public String getDueTime() {
+        return NO_DUE_DATE;
     }
 
     public boolean isCompleted() {
