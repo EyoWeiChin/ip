@@ -21,6 +21,8 @@ public class Parser {
     protected static final String DELIMIT_EVENT = "/at";
     protected static final String COMMAND_LIST = "list";
     protected static final String COMMAND_BYE = "bye";
+    protected static final String COMMAND_FIND = "find";
+    protected static final String DELIMIT_FIND = "";
     protected static final String COMMAND_DUE = "due";
     protected static final String DELIMIT_DUE = "";
 
@@ -53,6 +55,9 @@ public class Parser {
         case COMMAND_DELETE:
             commandParts = splitInputToParts(inputParts, DELIMIT_DELETE, COMMAND_DELETE);
             return new DeleteCommand(commandParts[1]);
+        case COMMAND_FIND:
+            commandParts = splitInputToParts(inputParts, DELIMIT_FIND, COMMAND_FIND);
+            return new FindCommand(commandParts[1]);
         case COMMAND_DUE:
             commandParts = splitInputToParts(inputParts, DELIMIT_DUE, COMMAND_DUE);
             return new DueCommand(commandParts[1]);
