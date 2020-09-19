@@ -1,5 +1,7 @@
 package duke;
 
+import duke.commands.ByeCommand;
+import duke.commands.Command;
 import duke.parser.Parser;
 import duke.storage.SaveManager;
 import duke.task.TaskList;
@@ -31,7 +33,6 @@ public class Duke {
             ui.printErrorMessage(fileReadError);
             this.tasks = new TaskList();
         }
-
     }
 
     public void run() {
@@ -42,12 +43,13 @@ public class Duke {
 
     private void loopUntilExitCommand() {
         boolean stillInteracting = true;
-        while (stillInteracting) {
+        while(stillInteracting) {
             try {
-                String[] processedInputs = parser.processInput();
-                stillInteracting = parser.executeCommand(processedInputs, tasks, saveManager);
-            } catch (DukeException e) {
-                ui.printErrorMessage(e);
+                Command command = parser.processInput(ui.getUserInput());
+                ui.printResultOfCommand(command.execute(tasks, saveManager));
+                stillInteracting = !(command instanceof ByeCommand);
+            } catch (DukeException error) {
+                ui.printErrorMessage(error);
             } finally {
                 ui.printSingleLine();
             }

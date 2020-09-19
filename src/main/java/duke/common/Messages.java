@@ -17,7 +17,7 @@ public class Messages {
                     + "What can I do for you?";
     public static final String MESSAGE_INVALID_OPTION = "Invalid option, Try again!"
                             + System.lineSeparator();
-    public static final String ERROR_MESSAGE_NO_INFO = "Error: Please provide more information!";
+    public static final String ERROR_MESSAGE_NO_INFO = "Please provide more information!";
     public static final String MESSAGE_REMOVED_TASK = "Noted! I have removed the task:";
     public static final String ERROR_CANNOT_WRITE = "Unable to write to file: ";
     public static final String MESSAGE_SUCCESSFUL_LOAD = "Save file loaded! Added the following tasks:";

@@ -1,6 +1,7 @@
 package duke.ui;
 
 import duke.DukeException;
+import duke.commands.ResultCommand;
 import duke.common.Messages;
 
 import java.io.PrintStream;
@@ -11,7 +12,7 @@ public class TextUI {
     /**
      * Declare scanner and print stream to handle I/O
      */
-    private static Scanner in;
+    private final Scanner in;
     private final PrintStream out;
 
     public TextUI() {
@@ -53,12 +54,20 @@ public class TextUI {
         out.println(e);
     }
 
+    public void printResultOfCommand(ResultCommand printResult) {
+        //Checks if empty string, don't print newline again
+        if(!printResult.getResultOfCommand().equals("")) {
+            out.println(printResult.getResultOfCommand());
+        }
+    }
+
+
     /**
      * Takes the raw user input from the next line
      *
      * @return the raw user input
      */
-    public static String getUserInput() {
+    public String getUserInput() {
         return in.nextLine();
     }
 }

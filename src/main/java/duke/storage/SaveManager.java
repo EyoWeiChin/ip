@@ -33,7 +33,7 @@ public class SaveManager {
     //protected static final File filePath = new File("data/duke.txt");
     protected static final File DATA_FOLDER = new File("data");
 
-    private File filePath;
+    private final File filePath;
 
     //TODO: Split the filePath in the constructor so that it can use a dynamic DATA_FOLDER
     public SaveManager(String filePath) {

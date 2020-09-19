@@ -23,9 +23,6 @@ public class TaskList {
      */
     public void addTask(Task newTask) {
         tasks.add(newTask);
-        System.out.println(Messages.SINGLE_LINE);
-        System.out.println("+ " + newTask);
-        System.out.println(Messages.MESSAGE_TASKS_LEFT + Task.getTotalTasks());
     }
 
     public void loadTask(Task newTask) {
@@ -34,45 +31,19 @@ public class TaskList {
 
     /**
      * Finds and delete the task from the Arraylist
-     * @param taskToDelete is the task id to delete
+     * @param taskToDeleteInt is the task id to delete
      */
-    public void deleteTask(String taskToDelete) {
-        int taskToDeleteInt = Integer.parseInt(taskToDelete) - 1;
-        if (taskToDeleteInt < 0 || taskToDeleteInt >= tasks.size()) {
-            System.out.println(Messages.MESSAGE_NO_SUCH_TASK);
-        } else {
-            System.out.println(Messages.MESSAGE_REMOVED_TASK);
-            System.out.println(tasks.get(taskToDeleteInt));
-            System.out.println(Messages.SINGLE_LINE);
-            tasks.remove(tasks.get(taskToDeleteInt));
-        }
+    public void deleteTask(int taskToDeleteInt) {
+        tasks.remove(tasks.get(taskToDeleteInt));
     }
 
     /**
      * Checks the task to complete, and completes it if it is a valid task.
      *
-     * @param taskIDInString Processed input that identifies the task to complete
+     * @param taskIDToFinish Processed input that identifies the task to complete
      */
-    public void completeTask(String taskIDInString) {
-        // Change from String to Integer then 0-base to 1-base indexing by deducting 1
-        int taskIDToFinish = Integer.parseInt(taskIDInString) - 1;
-        if (taskIDToFinish < 0 || taskIDToFinish >= tasks.size()) {
-            System.out.println(Messages.MESSAGE_NO_SUCH_TASK);
-        } else if (Task.getTotalTasks() == 0) {
-            System.out.println(Messages.MESSAGE_NO_REMAINING_TASKS);
-        } else if (tasks.get(taskIDToFinish).isCompleted()) {
-            System.out.println(Messages.MESSAGE_TASK_ALREADY_COMPLETED);
-        } else {
-            //Set the task to be completed and check remaining tasks.
-            tasks.get(taskIDToFinish).setCompleted(true);
-            System.out.println("'" + tasks.get(taskIDToFinish).getTaskName().trim() + "'");
-            System.out.println(Messages.MESSAGE_TASK_COMPLETED);
-            if(Task.getTotalTasks() == 0) {
-                System.out.println(Messages.MESSAGE_ALL_TASK_COMPLETED);
-            } else {
-                System.out.println(Messages.MESSAGE_TASKS_LEFT + Task.getTotalTasks());
-            }
-        }
+    public void completeTask(int taskIDToFinish) {
+        tasks.get(taskIDToFinish).setCompleted(true);
     }
 
     /**

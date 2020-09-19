@@ -1,13 +1,8 @@
 package duke.parser;
 
 import duke.DukeException;
+import duke.commands.*;
 import duke.common.Messages;
-import duke.storage.SaveManager;
-import duke.task.Deadline;
-import duke.task.Event;
-import duke.task.TaskList;
-import duke.task.Todo;
-import duke.ui.TextUI;
 
 public class Parser {
 
@@ -28,6 +23,40 @@ public class Parser {
     protected static final String COMMAND_BYE = "bye";
     protected static final String INVALID_OPTION = "invalid";
 
+
+    /**
+     * Returns the raw user input into the Command for execution based on found keywords
+     *
+     * @return Command to be executed
+     */
+    public Command processInput(String userInput) throws DukeException {
+        String[] inputParts = userInput.trim().split(RAW_COMMAND_DELIMIT, SPLIT_INPUT_LIMIT);
+        String[] commandParts;
+        switch (inputParts[0]) {
+        case COMMAND_BYE:
+            return new ByeCommand();
+        case COMMAND_LIST:
+            return new ListCommand();
+        case COMMAND_DONE:
+            commandParts = splitInputToParts(inputParts, DELIMIT_DONE, COMMAND_DONE);
+            return new DoneCommand(commandParts[1]);
+        case COMMAND_TODO:
+            commandParts = splitInputToParts(inputParts, DELIMIT_TODO, COMMAND_TODO);
+            return new AddCommand(commandParts[1]);
+        case COMMAND_DEADLINE:
+            commandParts = splitInputToParts(inputParts, DELIMIT_DEADLINE, COMMAND_DEADLINE);
+            return new AddCommand(commandParts[1], commandParts[2], COMMAND_DEADLINE);
+        case COMMAND_EVENT:
+            commandParts = splitInputToParts(inputParts, DELIMIT_EVENT, COMMAND_EVENT);
+            return new AddCommand(commandParts[1], commandParts[2], COMMAND_EVENT);
+        case COMMAND_DELETE:
+            commandParts = splitInputToParts(inputParts, DELIMIT_DELETE, COMMAND_DELETE);
+            return new DeleteCommand(commandParts[1]);
+        default:
+            throw new DukeException(Messages.ERROR_MESSAGE_NO_INFO);
+        }
+    }
+
     /**
      * Returns the split inputParts into 3 distinct data: Command, Task name, Task Parameters
      *
@@ -36,9 +65,10 @@ public class Parser {
      * @param taskType The identified type of the COMMAND
      * @return processedInputs String array with the input in parts
      */
-    public static String[] splitInputToParts(String[] inputParts, String splitBy, String taskType) {
+    public static String[] splitInputToParts(String[] inputParts, String splitBy, String taskType)
+            throws DukeException {
         String userInput;
-        String taskName = Messages.INIT_STRING;
+        String taskName;
         String taskParameter = Messages.INIT_STRING;
         try {
             taskName = inputParts[1];
@@ -51,81 +81,9 @@ public class Parser {
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             //Catches out of bounds for two different splicing
-            System.out.println(Messages.ERROR_MESSAGE_NO_INFO);
-            userInput = INVALID_OPTION;
+            throw new DukeException(Messages.ERROR_MESSAGE_NO_INFO);
         }
         return new String[]{ userInput, taskName, taskParameter };
     }
 
-    /**
-     * Returns the raw user input into processed parts for execution based on found keywords
-     *
-     *
-     * @return processedInputs String array with the input in parts as follows
-     * processedInputs[0] the processed Command e.g COMMAND_DONE, COMMAND_TODO, ...
-     * processedInputs[1] taskName e.g 'borrow book' or 1 (taskID for done commands)
-     * processedInputs[2] = taskParameter, e.g 'Sunday', 'Mon 2pm-4pm'
-     */
-    public String[] processInput() {
-        String userInput = TextUI.getUserInput();
-        String[] inputParts = userInput.trim().split(RAW_COMMAND_DELIMIT, SPLIT_INPUT_LIMIT);
-        switch (inputParts[0]) {
-        case COMMAND_DONE:
-            return splitInputToParts(inputParts, DELIMIT_DONE, COMMAND_DONE);
-        case COMMAND_TODO:
-            return splitInputToParts(inputParts, DELIMIT_TODO, COMMAND_TODO);
-        case COMMAND_DEADLINE:
-            return splitInputToParts(inputParts, DELIMIT_DEADLINE, COMMAND_DEADLINE);
-        case COMMAND_EVENT:
-            return splitInputToParts(inputParts, DELIMIT_EVENT, COMMAND_EVENT);
-        case COMMAND_DELETE:
-            return splitInputToParts(inputParts, DELIMIT_DELETE, COMMAND_DELETE);
-        default:
-            //Catch List and Bye commands that need no processing
-            return new String[]{ inputParts[0], Messages.INIT_STRING, Messages.INIT_STRING };
-        }
-    }
-
-    /**
-     * Returns True or False after it takes the processed input and executes the command.
-     *
-     * @param processedInputs An array of the processed user input
-     * @return boolean Returns false if COMMAND_BYE to terminate the program
-     */
-    public boolean executeCommand(String[] processedInputs, TaskList tasks, SaveManager saveManager)
-            throws DukeException {
-        String userInput = processedInputs[0];
-        String taskName = processedInputs[1];
-        String taskParameter = processedInputs[2];
-        switch (userInput) {
-        case COMMAND_BYE:
-            return false;
-        case COMMAND_LIST:
-            tasks.listAllTasks();
-            break;
-        case COMMAND_TODO:
-            tasks.addTask(new Todo(taskName));
-            saveManager.saveTaskList(tasks);
-            break;
-        case COMMAND_DEADLINE:
-            tasks.addTask(new Deadline(taskName, taskParameter));
-            saveManager.saveTaskList(tasks);
-            break;
-        case COMMAND_EVENT:
-            tasks.addTask(new Event(taskName, taskParameter));
-            saveManager.saveTaskList(tasks);
-            break;
-        case COMMAND_DONE:
-            tasks.completeTask(taskName);
-            saveManager.saveTaskList(tasks);
-            break;
-        case COMMAND_DELETE:
-            tasks.deleteTask(taskName);
-            saveManager.saveTaskList(tasks);
-            break;
-        default:
-            throw new DukeException(Messages.MESSAGE_INVALID_OPTION);
-        }
-        return true;
-    }
 }
