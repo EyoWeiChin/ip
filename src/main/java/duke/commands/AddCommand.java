@@ -1,6 +1,5 @@
 package duke.commands;
 
-
 import duke.common.Messages;
 import duke.storage.SaveManager;
 import duke.task.Deadline;
@@ -8,6 +7,10 @@ import duke.task.Event;
 import duke.task.Task;
 import duke.task.TaskList;
 import duke.task.Todo;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 
 public class AddCommand extends Command {
 
@@ -22,6 +25,13 @@ public class AddCommand extends Command {
     }
 
     public AddCommand(String taskName, String taskDuration, String taskType) {
+        try {
+            LocalDate tryParsing = LocalDate.parse(taskDuration.trim());
+            taskDuration = tryParsing.format(DateTimeFormatter.ofPattern(Messages.DATE_TIME_FORMAT));
+        } catch(java.time.format.DateTimeParseException invalidDateFormat) {
+            //Do nothing to modify the taskDuration. This enables us to store other strings as task Duration
+        }
+
         if(taskType.equals(TYPE_DEADLINE)) {
             addThis = new Deadline(taskName, taskDuration);
         } else if(taskType.equals(TYPE_EVENT)) {

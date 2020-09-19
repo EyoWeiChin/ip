@@ -127,7 +127,7 @@ public class SaveManager {
             } else if (saveTask instanceof Event) {
                 saveString.append(SAVE_EVENT + DELIMIT_SAVE_FILE);
                 saveString.append(saveTask.getTaskName()).append(DELIMIT_SAVE_FILE);
-                saveString.append(((Event) saveTask).getDuration()).append(DELIMIT_SAVE_FILE);
+                saveString.append(((Event) saveTask).getDueTime()).append(DELIMIT_SAVE_FILE);
             }
             saveString.append(System.lineSeparator());
         }
