@@ -33,4 +33,5 @@ public class Messages {
     public static final String SINGLE_LINE =
                     "____________________________________________________________";
     public static final String INIT_STRING = "";
+    public static final String DATE_TIME_FORMAT = "MM/dd/yyyy";
 }
