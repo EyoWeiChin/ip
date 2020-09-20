@@ -9,11 +9,11 @@ import duke.task.TaskList;
  * Mark a Task as completed indicated by an index
  */
 public class DoneCommand extends Command {
-    private String taskIDInString;
+    private int taskIDToComplete;
     private String result;
 
     public DoneCommand(String taskIDInString) {
-        this.taskIDInString = taskIDInString;
+        this.taskIDToComplete = Integer.parseInt(taskIDInString) - 1;
     }
 
     /**
@@ -25,25 +25,30 @@ public class DoneCommand extends Command {
      */
     @Override
     public ResultCommand execute(TaskList tasks, SaveManager saveManager) {
-        int taskIDToFinish = Integer.parseInt(taskIDInString) - 1;
-        if (taskIDToFinish < 0 || taskIDToFinish >= tasks.getTasks().size()) {
+        if (canTaskBeCompleted(tasks)) {
+            tasks.completeTask(taskIDToComplete);
+            saveManager.saveTaskList(tasks);
+        }
+        return new ResultCommand(result);
+    }
+
+    private boolean canTaskBeCompleted(TaskList tasks) {
+        if (taskIDToComplete < 0 || taskIDToComplete >= tasks.getTasks().size()) {
             result = Messages.MESSAGE_NO_SUCH_TASK;
         } else if (Task.getTotalTasks() == 0) {
             result = Messages.MESSAGE_NO_REMAINING_TASKS;
-        } else if (tasks.getTasks().get(taskIDToFinish).isCompleted()) {
+        } else if (tasks.getTasks().get(taskIDToComplete).isCompleted()) {
             result = Messages.MESSAGE_TASK_ALREADY_COMPLETED;
         } else {
-            tasks.completeTask(taskIDToFinish);
-            saveManager.saveTaskList(tasks);
-            result = "'" + tasks.getTasks().get(taskIDToFinish).getTaskName().trim() + "'";
-            result += System.lineSeparator() + Messages.MESSAGE_TASK_COMPLETED;
+            result = "'" + tasks.getTasks().get(taskIDToComplete).getTaskName().trim() + "'";
+            result += System.lineSeparator() + Messages.MESSAGE_TASK_COMPLETED + System.lineSeparator();
             if (Task.getTotalTasks() == 0) {
                 result += Messages.MESSAGE_ALL_TASK_COMPLETED;
             } else {
                 result += Messages.MESSAGE_TASKS_LEFT + Task.getTotalTasks();
             }
+            return true;
         }
-        return new ResultCommand(result);
-
+        return false;
     }
 }
