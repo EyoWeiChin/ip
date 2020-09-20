@@ -41,25 +41,43 @@ public class SaveManager {
     }
 
     /**
-     * Checks if save folder and save file exists, if not create them.
-     * If they exist, call savedFileReader() to read it.
+     * Handles creating a TaskList and loading the result. Will call methods to create file if needed
+     * Prints the result of loading at the end
      */
     public TaskList loadTaskList() throws DukeException {
         TaskList loadedTasks = new TaskList();
         try {
-            Files.createDirectories(Paths.get(String.valueOf(DATA_FOLDER)));
-            Files.createFile(Paths.get(String.valueOf(filePath)));
+            createDirIfNeeded();
+            createFileIfNeeded();
             throw new DukeException(Messages.MESSAGE_CREATED_SAVE_FILE);
         } catch (IOException fileExists) {
-            //The actual reading takes place here
-            savedFileReader(loadedTasks);
+            //Do nothing as the files would be created when needed
         }
 
+        savedFileReader(loadedTasks);
+        printLoadResult(loadedTasks);
+        return loadedTasks;
+    }
+
+    private void printLoadResult(TaskList loadedTasks) {
         if (loadedTasks.getTasks().size() > 0) {
             System.out.println(Messages.MESSAGE_SUCCESSFUL_LOAD);
             loadedTasks.listAllTasks();
+        } else {
+            System.out.println(Messages.MESSAGE_NO_TASK_LOADED);
         }
-        return loadedTasks;
+    }
+
+    private void createDirIfNeeded() throws IOException {
+        if (!DATA_FOLDER.exists()) {
+            Files.createDirectories(Paths.get(String.valueOf(DATA_FOLDER)));
+        }
+    }
+
+    private void createFileIfNeeded() throws IOException {
+        if (!filePath.exists()) {
+            Files.createFile(Paths.get(String.valueOf(filePath)));
+        }
     }
 
     /**
