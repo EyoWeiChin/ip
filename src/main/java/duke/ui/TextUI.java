@@ -7,6 +7,9 @@ import duke.common.Messages;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+/**
+ * Represents the Text User Interface for the application
+ */
 public class TextUI {
 
     /**

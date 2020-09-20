@@ -1,5 +1,8 @@
 package duke.common;
 
+/**
+ * Container for all messages used in program
+ */
 public class Messages {
     public static final String MESSAGE_NO_TASKS_DUE = "Fortunately, you have no tasks due";
     /**

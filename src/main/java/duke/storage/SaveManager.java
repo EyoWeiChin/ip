@@ -15,9 +15,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-
+/**
+ * Represents a save file with methods to save / load / create the save file
+ */
 public class SaveManager {
-    //Constant Variables for Save / Load logic
+    /**
+     * Constant variables used for save and loading command logic
+     */
     protected static final String DELIMIT_SAVE_FILE = " | ";
     protected static final String DELIMIT_SAVE_FILE_REGEX = "\\|";
     protected static final int SPLIT_SAVE_LIMIT = 5;

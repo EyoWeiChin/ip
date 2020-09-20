@@ -1,5 +1,8 @@
 package duke.task;
 
+/**
+ * Represents a Task in a TaskList
+ */
 public class Task {
     private static final String NO_DUE_DATE = "";
     //duke.task.Task attribute

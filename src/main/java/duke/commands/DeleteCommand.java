@@ -4,6 +4,9 @@ import duke.common.Messages;
 import duke.storage.SaveManager;
 import duke.task.TaskList;
 
+/**
+ * Deletes a task identified by a task id
+ */
 public class DeleteCommand extends Command {
     private String taskToDelete;
     private String result;
@@ -12,6 +15,12 @@ public class DeleteCommand extends Command {
         this.taskToDelete = taskToDelete;
     }
 
+    /**
+     * Performs input validation and checks to delete only legitimate tasks
+     * @param tasks TaskList to delete from
+     * @param saveManager Updates this save file after delete
+     * @return ResultCommand object that has the result of the delete execution
+     */
     @Override
     public ResultCommand execute(TaskList tasks, SaveManager saveManager) {
         int taskToDeleteInt = Integer.parseInt(taskToDelete) - 1;

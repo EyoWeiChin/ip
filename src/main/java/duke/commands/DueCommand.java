@@ -10,11 +10,19 @@ import duke.task.TaskList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Searches and returns for all tasks with the specified due date.
+ */
 public class DueCommand extends Command {
 
-    private static final String ERROR_INVALID_DATE = "Invalid Date!";
+    private static final String ERROR_INVALID_DATE = "Invalid Date! Format: 'due YYYY/MM/DD'";
     private LocalDate checkThisDate;
 
+    /**
+     * Constructor that validates the specified date input
+     * @param checkThisDate The specified date to search for
+     * @throws DukeException When the date is not in the valid format
+     */
     public DueCommand(String checkThisDate) throws DukeException {
         try {
             this.checkThisDate = LocalDate.parse(checkThisDate.trim());
@@ -23,6 +31,12 @@ public class DueCommand extends Command {
         }
     }
 
+    /**
+     * Finds all Deadline and Event tasks that has the same specified LocalDate Object.
+     * @param tasks TaskList to complete the task
+     * @param saveManager Updates this save file after completion
+     * @return ResultCommand object that has the found tasks as result
+     */
     @Override
     public ResultCommand execute(TaskList tasks, SaveManager saveManager) {
         String formattedDate = checkThisDate.format(DateTimeFormatter.ofPattern(Messages.DATE_TIME_FORMAT));

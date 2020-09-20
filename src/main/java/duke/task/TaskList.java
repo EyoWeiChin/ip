@@ -4,6 +4,9 @@ import duke.common.Messages;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the entire TaskList. Will store all details of Tasks and methods to support adding and removal
+ */
 public class TaskList {
 
     private final ArrayList<Task> tasks;
