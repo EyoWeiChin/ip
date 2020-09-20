@@ -1,6 +1,9 @@
 package duke.commands;
 
-public class ResultCommand extends Command {
+/**
+ *  Hold the result and information of every command to be printed.
+ */
+public class ResultCommand {
     private static final String EMPTY_STRING = "";
     private final String resultOfCommand;
 

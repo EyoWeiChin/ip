@@ -3,6 +3,9 @@ package duke.commands;
 import duke.storage.SaveManager;
 import duke.task.TaskList;
 
+/**
+ * Finds a task using the task's name and a search string
+ */
 public class FindCommand extends Command {
     private String findThisTask;
 

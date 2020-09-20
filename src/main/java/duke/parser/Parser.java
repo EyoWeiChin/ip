@@ -4,9 +4,14 @@ import duke.DukeException;
 import duke.commands.*;
 import duke.common.Messages;
 
+/**
+ * Parses and handles user input
+ */
 public class Parser {
 
-    //Constant variables for Command logic
+    /**
+     * Constant variables used for input and string processing
+     */
     protected static final String RAW_COMMAND_DELIMIT = " ";
     protected static final int SPLIT_INPUT_LIMIT = 2;
     protected static final String COMMAND_DELETE = "delete";
@@ -28,8 +33,7 @@ public class Parser {
 
 
     /**
-     * Returns the raw user input into the Command for execution based on found keywords
-     *
+     * Returns the raw user input into the Command for execution based on found keywords.
      * @return Command to be executed
      */
     public Command processInput(String userInput) throws DukeException {

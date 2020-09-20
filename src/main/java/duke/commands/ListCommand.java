@@ -3,6 +3,9 @@ package duke.commands;
 import duke.storage.SaveManager;
 import duke.task.TaskList;
 
+/**
+ * Lists all tasks in the task lists
+ */
 public class ListCommand extends Command {
 
     @Override

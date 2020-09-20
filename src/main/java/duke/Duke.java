@@ -7,6 +7,10 @@ import duke.storage.SaveManager;
 import duke.task.TaskList;
 import duke.ui.TextUI;
 
+/**
+ * Entry point for Duke.
+ * Greets the User, loads the save file and begins User interaction
+ */
 public class Duke {
 
     private final TextUI ui;
@@ -14,16 +18,16 @@ public class Duke {
     private final Parser parser;
     private TaskList tasks;
 
-    /**
-     * Main entry point of the application
-     * Greets the User, loads the save file and begins User interaction
-     */
     public static void main(String[] args) {
         new Duke("data/duke.txt").run();
     }
 
+
+    /**
+     * Initialize the starting resources that is required by the application
+     * @param filePath is the path of the save file that will be loaded at the start
+     */
     public Duke(String filePath) {
-        //Initialize starting resources
         this.ui = new TextUI();
         this.parser = new Parser();
         this.saveManager = new SaveManager(filePath);
@@ -35,12 +39,19 @@ public class Duke {
         }
     }
 
+    /**
+     * Runs the program until the Bye Command
+     */
     public void run() {
         start();
         loopUntilExitCommand();
         exit();
     }
 
+    /**
+     * The main looping logic that processes the user inputs and parses the command.
+     * Once the input has been processed, it will execute the command and prints the Command result
+     */
     private void loopUntilExitCommand() {
         boolean stillInteracting = true;
         while(stillInteracting) {
