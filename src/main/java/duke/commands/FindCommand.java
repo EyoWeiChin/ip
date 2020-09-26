@@ -15,6 +15,8 @@ public class FindCommand extends Command {
 
     @Override
     public ResultCommand execute(TaskList tasks, SaveManager saveManager) {
+
+        //Use stream to find Tasks that has the search string and then prints them.
         tasks.getTasks().stream().filter((s)-> s.getTaskName().contains(findThisTask))
                 .forEach(System.out::println);
         return new ResultCommand();

@@ -40,6 +40,8 @@ public class DueCommand extends Command {
     @Override
     public ResultCommand execute(TaskList tasks, SaveManager saveManager) {
         String formattedDate = checkThisDate.format(DateTimeFormatter.ofPattern(Messages.DATE_TIME_FORMAT));
+
+        //Used stream to find Deadline and Event tasks that has the request date, then it prints them.
         tasks.getTasks().stream().filter((s)-> s instanceof Deadline || s instanceof Event)
                 .filter((s)->s.getDueTime().equals(formattedDate.trim()))
                 .forEach(System.out::println);

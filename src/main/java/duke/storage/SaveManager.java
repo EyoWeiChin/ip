@@ -34,7 +34,6 @@ public class SaveManager {
     /**
      * Declare file paths for saving and loading
      */
-    //protected static final File filePath = new File("data/duke.txt");
     protected static final File DATA_FOLDER = new File("data");
 
     private final File filePath;
@@ -53,9 +52,9 @@ public class SaveManager {
         try {
             createDirIfNeeded();
             createFileIfNeeded();
-            throw new DukeException(Messages.MESSAGE_CREATED_SAVE_FILE);
         } catch (IOException fileExists) {
             //Do nothing as the files would be created when needed
+            //This will only catch rare exceptions of duplicate files created after the first check
         }
 
         savedFileReader(loadedTasks);
@@ -63,6 +62,10 @@ public class SaveManager {
         return loadedTasks;
     }
 
+    /**
+     * Checks if any tasks were loaded and print them
+     * @param loadedTasks is the TaskList object to load the saved data into
+     */
     private void printLoadResult(TaskList loadedTasks) {
         if (loadedTasks.getTasks().size() > 0) {
             System.out.println(Messages.MESSAGE_SUCCESSFUL_LOAD);
@@ -72,22 +75,24 @@ public class SaveManager {
         }
     }
 
-    private void createDirIfNeeded() throws IOException {
+    private void createDirIfNeeded() throws IOException, DukeException {
         if (!DATA_FOLDER.exists()) {
             Files.createDirectories(Paths.get(String.valueOf(DATA_FOLDER)));
+            throw new DukeException(Messages.MESSAGE_CREATED_SAVE_FOLDER);
         }
     }
 
-    private void createFileIfNeeded() throws IOException {
+    private void createFileIfNeeded() throws IOException, DukeException {
         if (!filePath.exists()) {
             Files.createFile(Paths.get(String.valueOf(filePath)));
+            throw new DukeException(Messages.MESSAGE_CREATED_SAVE_FILE);
         }
     }
 
     /**
      * Reads the saved file and adds the saved data to the data structure.
-     * @param tasks
-     * @throws DukeException
+     * @param tasks is the TaskList object to load the saved data into
+     * @throws DukeException when save file cannot be found found
      */
     private void savedFileReader(TaskList tasks) throws DukeException {
         Scanner fileScanner;
@@ -128,11 +133,11 @@ public class SaveManager {
 
     /**
      * Saves the current TaskList to a save file in the correct format that can be loaded.
-     * @param tasks
+     * @param tasks is the TaskList object to load the saved data into
      */
     public void saveTaskList(TaskList tasks) {
         StringBuilder saveString = new StringBuilder(Messages.INIT_STRING);
-        //Loop through the Task ArrayList and build the string to save
+        //Here it will loop through the TaskList and build the string to be saved.
         for (Task saveTask: tasks.getTasks()) {
             if (saveTask.isCompleted()) {
                 saveString.append(SAVE_COMPLETED_TASK + DELIMIT_SAVE_FILE);
@@ -145,11 +150,11 @@ public class SaveManager {
             } else if (saveTask instanceof Deadline) {
                 saveString.append(SAVE_DEADLINE + DELIMIT_SAVE_FILE);
                 saveString.append(saveTask.getTaskName()).append(DELIMIT_SAVE_FILE);
-                saveString.append(((Deadline) saveTask).getDueTime()).append(DELIMIT_SAVE_FILE);
+                saveString.append(saveTask.getDueTime()).append(DELIMIT_SAVE_FILE);
             } else if (saveTask instanceof Event) {
                 saveString.append(SAVE_EVENT + DELIMIT_SAVE_FILE);
                 saveString.append(saveTask.getTaskName()).append(DELIMIT_SAVE_FILE);
-                saveString.append(((Event) saveTask).getDueTime()).append(DELIMIT_SAVE_FILE);
+                saveString.append(saveTask.getDueTime()).append(DELIMIT_SAVE_FILE);
             }
             saveString.append(System.lineSeparator());
         }
