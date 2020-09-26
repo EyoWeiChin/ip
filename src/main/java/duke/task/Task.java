@@ -5,14 +5,13 @@ package duke.task;
  */
 public class Task {
     private static final String NO_DUE_DATE = "";
-    //duke.task.Task attribute
+    protected static final String DONE_ICON = "[✓]";
+    protected static final String NOT_DONE_ICON = "[✗]";
+    protected static final String WHITE_SPACE = " ";
     private boolean isCompleted;
     private String taskName;
-
-    //Class Level Attribute
     private static int totalTasks = 0;
 
-    //duke.task.Task Constructor
     public Task(String taskName) {
         this.isCompleted = false;
         this.taskName = taskName;
@@ -28,7 +27,7 @@ public class Task {
     }
 
     public String getStatusIndicator() {
-        return (isCompleted ? "[✓]" : "[✗]");
+        return (isCompleted ? DONE_ICON : NOT_DONE_ICON);
     }
 
     public void setCompleted(boolean completed) {
@@ -40,20 +39,12 @@ public class Task {
         return taskName;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
-
     public static int getTotalTasks() {
         return totalTasks;
     }
 
-    public static void setTotalTasks(int totalTasks) {
-        Task.totalTasks = totalTasks;
-    }
-
     @Override
     public String toString() {
-        return getStatusIndicator() + " " + getTaskName();
+        return getStatusIndicator() + WHITE_SPACE + getTaskName();
     }
 }

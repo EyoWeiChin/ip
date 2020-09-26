@@ -9,6 +9,7 @@ import java.util.ArrayList;
  */
 public class TaskList {
 
+    protected static final String ID_DELIMIT = ": ";
     private final ArrayList<Task> tasks;
 
     public TaskList() {
@@ -57,7 +58,7 @@ public class TaskList {
             System.out.println(Messages.MESSAGE_NO_TASKS_DUE);
         } else {
             for (int i = 0; i < tasks.size(); i++) {
-                System.out.println((i + 1) + ": " + tasks.get(i));
+                System.out.println((i + 1) + ID_DELIMIT + tasks.get(i));
             }
         }
     }

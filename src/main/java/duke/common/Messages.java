@@ -18,16 +18,14 @@ public class Messages {
     public static final String MESSAGE_GOODBYE = "Bye! Hope to see you again soon!";
     public static final String MESSAGE_GREETING = "Hello! I'm Duke!" + System.lineSeparator()
                     + "What can I do for you?";
-    public static final String MESSAGE_INVALID_OPTION = "Invalid option, Try again!"
-                            + System.lineSeparator();
     public static final String ERROR_MESSAGE_NO_INFO = "Please provide more information!";
     public static final String MESSAGE_REMOVED_TASK = "Noted! I have removed the task:";
     public static final String ERROR_CANNOT_WRITE = "Unable to write to file: ";
     public static final String MESSAGE_SUCCESSFUL_LOAD = "Save file loaded! Added the following tasks:";
     public static final String MESSAGE_NO_TASK_LOADED = "No tasks loaded!";
     public static final String ERROR_DUPLICATE_SAVE = "Save file already exists!";
-    public static final String MESSAGE_CREATED_SAVE_FILE = "No save file detected! New file was created!";
-
+    public static final String MESSAGE_CREATED_SAVE_FILE = "Save file not found! New file created!";
+    public static final String MESSAGE_CREATED_SAVE_FOLDER = "Save folder not found! New directory created!";
 
     public static final String LOGO = " ____        _" + System.lineSeparator()
             + "|  _ \\ _   _| | _____" + System.lineSeparator()

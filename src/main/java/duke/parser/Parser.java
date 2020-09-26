@@ -1,7 +1,14 @@
 package duke.parser;
 
 import duke.DukeException;
-import duke.commands.*;
+import duke.commands.AddCommand;
+import duke.commands.ByeCommand;
+import duke.commands.Command;
+import duke.commands.DeleteCommand;
+import duke.commands.DoneCommand;
+import duke.commands.DueCommand;
+import duke.commands.FindCommand;
+import duke.commands.ListCommand;
 import duke.common.Messages;
 
 /**
@@ -16,21 +23,27 @@ public class Parser {
     protected static final int SPLIT_INPUT_LIMIT = 2;
     protected static final String COMMAND_DELETE = "delete";
     protected static final String DELIMIT_DELETE = "";
+
     protected static final String COMMAND_TODO = "todo";
     protected static final String DELIMIT_TODO = "";
+
     protected static final String COMMAND_DONE = "done";
     protected static final String DELIMIT_DONE = "";
+
     protected static final String COMMAND_DEADLINE = "deadline";
     protected static final String DELIMIT_DEADLINE = "/by";
+
     protected static final String COMMAND_EVENT = "event";
     protected static final String DELIMIT_EVENT = "/at";
-    protected static final String COMMAND_LIST = "list";
-    protected static final String COMMAND_BYE = "bye";
+
     protected static final String COMMAND_FIND = "find";
     protected static final String DELIMIT_FIND = "";
+
     protected static final String COMMAND_DUE = "due";
     protected static final String DELIMIT_DUE = "";
 
+    protected static final String COMMAND_LIST = "list";
+    protected static final String COMMAND_BYE = "bye";
 
     /**
      * Returns the raw user input into the Command for execution based on found keywords.
@@ -93,7 +106,7 @@ public class Parser {
                 taskParameter = dateParts[1];
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            //Catches out of bounds for two different splicing
+            // Catches out of bounds for two different splicing
             throw new DukeException(Messages.ERROR_MESSAGE_NO_INFO);
         }
         return new String[]{ userInput, taskName, taskParameter };

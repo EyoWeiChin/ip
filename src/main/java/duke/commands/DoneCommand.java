@@ -17,8 +17,7 @@ public class DoneCommand extends Command {
     }
 
     /**
-     * Performs input validation and checks to ensure that task to be completed is a legitmate task before
-     * completing it
+     * Completes the tasks if it is a valid Task that can be completed
      * @param tasks TaskList to complete the task
      * @param saveManager Updates this save file after completion
      * @return ResultCommand object that has the result of the done execution
@@ -33,6 +32,7 @@ public class DoneCommand extends Command {
     }
 
     private boolean canTaskBeCompleted(TaskList tasks) {
+        boolean isValidTask = false;
         if (taskIDToComplete < 0 || taskIDToComplete >= tasks.getTasks().size()) {
             result = Messages.MESSAGE_NO_SUCH_TASK;
         } else if (Task.getTotalTasks() == 0) {
@@ -47,8 +47,8 @@ public class DoneCommand extends Command {
             } else {
                 result += Messages.MESSAGE_TASKS_LEFT + Task.getTotalTasks();
             }
-            return true;
+            isValidTask = true;
         }
-        return false;
+        return isValidTask;
     }
 }

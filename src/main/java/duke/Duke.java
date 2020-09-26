@@ -13,13 +13,14 @@ import duke.ui.TextUI;
  */
 public class Duke {
 
+    protected static final String FIXED_FILE_PATH = "data/duke.txt";
     private final TextUI ui;
     private final SaveManager saveManager;
     private final Parser parser;
     private TaskList tasks;
 
     public static void main(String[] args) {
-        new Duke("data/duke.txt").run();
+        new Duke(FIXED_FILE_PATH).run();
     }
 
 

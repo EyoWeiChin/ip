@@ -4,6 +4,9 @@ package duke.task;
  * Represents an Event task
  */
 public class Event extends Task {
+    protected static final String EVENT_ICON = "[E]";
+    protected static final String DURATION_OPEN = " (at:";
+    protected static final String DURATION_CLOSE = ")";
     protected String duration;
 
     public Event(String taskName, String duration) {
@@ -22,6 +25,6 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (at:" + duration + ")";
+        return EVENT_ICON + super.toString() + DURATION_OPEN + duration + DURATION_CLOSE;
     }
 }
