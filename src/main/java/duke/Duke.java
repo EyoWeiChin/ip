@@ -23,9 +23,9 @@ public class Duke {
         new Duke(FIXED_FILE_PATH).run();
     }
 
-
     /**
      * Initialize the starting resources that is required by the application
+     *
      * @param filePath is the path of the save file that will be loaded at the start
      */
     public Duke(String filePath) {

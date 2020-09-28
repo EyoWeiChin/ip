@@ -4,7 +4,7 @@ import duke.storage.SaveManager;
 import duke.task.TaskList;
 
 /**
- * Indicate to program to commence exit.
+ * Indicates an exit command and program will commence exit.
  */
 public class ByeCommand extends Command {
 

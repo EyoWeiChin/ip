@@ -35,6 +35,7 @@ public class TaskList {
 
     /**
      * Finds and delete the task from the Arraylist
+     *
      * @param taskToDeleteInt is the task id to delete
      */
     public void deleteTask(int taskToDeleteInt) {

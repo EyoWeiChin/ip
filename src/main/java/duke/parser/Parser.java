@@ -47,7 +47,8 @@ public class Parser {
 
     /**
      * Returns the raw user input into the Command for execution based on found keywords.
-     * @return Command to be executed
+     *
+     * @return the Command to be executed
      */
     public Command processInput(String userInput) throws DukeException {
         String[] inputParts = userInput.trim().split(RAW_COMMAND_DELIMIT, SPLIT_INPUT_LIMIT);

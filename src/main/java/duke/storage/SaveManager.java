@@ -43,9 +43,13 @@ public class SaveManager {
         this.filePath = new File(filePath);
     }
 
+
     /**
      * Handles creating a TaskList and loading the result. Will call methods to create file if needed
      * Prints the result of loading at the end
+     *
+     * @return tasks the TaskList object that has the loaded tasks
+     * @throws DukeException if duplicate file is found
      */
     public TaskList loadTaskList() throws DukeException {
         TaskList loadedTasks = new TaskList();
@@ -64,6 +68,7 @@ public class SaveManager {
 
     /**
      * Checks if any tasks were loaded and print them
+     *
      * @param loadedTasks is the TaskList object to load the saved data into
      */
     private void printLoadResult(TaskList loadedTasks) {
@@ -90,9 +95,10 @@ public class SaveManager {
     }
 
     /**
-     * Reads the saved file and adds the saved data to the data structure.
+     * Reads the saved file and adds the saved data to the data structure
+     * .
      * @param tasks is the TaskList object to load the saved data into
-     * @throws DukeException when save file cannot be found found
+     * @throws DukeException if save file cannot be found
      */
     private void savedFileReader(TaskList tasks) throws DukeException {
         Scanner fileScanner;
@@ -133,6 +139,7 @@ public class SaveManager {
 
     /**
      * Saves the current TaskList to a save file in the correct format that can be loaded.
+     *
      * @param tasks is the TaskList object to load the saved data into
      */
     public void saveTaskList(TaskList tasks) {

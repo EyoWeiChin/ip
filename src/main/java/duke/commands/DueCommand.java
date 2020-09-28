@@ -20,8 +20,9 @@ public class DueCommand extends Command {
 
     /**
      * Constructor that validates the specified date input
+     *
      * @param checkThisDate The specified date to search for
-     * @throws DukeException When the date is not in the valid format
+     * @throws DukeException if the date is not in the valid format
      */
     public DueCommand(String checkThisDate) throws DukeException {
         try {
@@ -33,7 +34,8 @@ public class DueCommand extends Command {
 
     /**
      * Finds all Deadline and Event tasks that has the same specified LocalDate Object.
-     * @param tasks TaskList to complete the task
+     *
+     * @param tasks The TaskList object to complete the task
      * @param saveManager Updates this save file after completion
      * @return ResultCommand object that has the found tasks as result
      */

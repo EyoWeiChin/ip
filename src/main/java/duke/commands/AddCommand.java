@@ -32,9 +32,10 @@ public class AddCommand extends Command {
 
     /**
      * Constructor to handle Deadline and Event tasks
+     *
      * @param taskName Name of the task
-     * @param taskDuration Received as String but could potentially be LocalDate object.
-     * @param taskType Will be either a deadline or event identifier.
+     * @param taskDuration Duration of the the tasks, it could be a LocalDate object in String form.
+     * @param taskType The type of task. It will be either a deadline or event identifier.
      */
     public AddCommand(String taskName, String taskDuration, String taskType) {
         try {
@@ -53,9 +54,10 @@ public class AddCommand extends Command {
 
     /**
      * Executes the command by adding to TaskList and saving the update to the save file
-     * @param tasks This is the TaskList to add to.
-     * @param saveManager This is the SaveManager class.
-     * @return ResultCommand object that will store the output to show to user.
+     *
+     * @param tasks the TaskList object that the task will be added to.
+     * @param saveManager the SaveManager object.
+     * @return ResultCommand object that will contain the output of the command.
      */
     @Override
     public ResultCommand execute(TaskList tasks, SaveManager saveManager) {

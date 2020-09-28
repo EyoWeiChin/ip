@@ -13,10 +13,16 @@ public class FindCommand extends Command {
         this.findThisTask = findThisTask;
     }
 
+    /**
+     * Finds tasks that has the search string in the task name.
+     *
+     * @param tasks the TaskList object
+     * @param saveManager the SaveManager object
+     * @return
+     */
     @Override
     public ResultCommand execute(TaskList tasks, SaveManager saveManager) {
-
-        //Use stream to find Tasks that has the search string and then prints them.
+        //Stream that will find Tasks that has the search string and then prints them.
         tasks.getTasks().stream().filter((s)-> s.getTaskName().contains(findThisTask))
                 .forEach(System.out::println);
         return new ResultCommand();
