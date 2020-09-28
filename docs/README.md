@@ -7,7 +7,7 @@ Duke is a flexible command line application that is useful for managing tasks.
 3. Move the jar file to the folder that will be used as the working directory for this application.
 4. Run the following command to execute the program.
 5. Here are some sample commands to get you started.
-6. Refer to Usage for full command list.
+6. Refer to Usage or Command Summary section for more details.
 
 ## Features 
 ### Task Manager
@@ -163,3 +163,26 @@ The expected outcome:
 ```
 Bye! Hope to see you again soon!
 ```
+
+## FAQ
+Q: Why do I keep getting "Error: Please provide more information"
+A: This error message indicates that you did not provide enough information for the command to work on.
+You can refer to the sample input for more information.
+
+Q: Where does Duke store my save file?
+A: It will create a data/duke.txt in the working directory that Duke was called from.
+
+
+## Command Summary
+
+|Feature|Command|
+|---    |---|
+| List all Tasks                | `list` |
+| Add a Todo task               | `todo task_name` |
+| Add a Deadline task           | `deadline task_name /by due_by <br> deadline task_name /by YYYY-MM-DD` |
+| Add an Event task             | `event task_name /at due_date <br> event task_name /at YYYY-MM-DD`    |
+| Mark a task as complete       | `done task_id` |
+| Delete a task from the list   | `delete task_id` |
+| Find a specific task          | `find search_term` |
+| Find task on a specific date  | `due search_date`  |
+| Exit                          | `bye` | 
