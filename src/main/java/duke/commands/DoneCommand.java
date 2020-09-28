@@ -1,5 +1,6 @@
 package duke.commands;
 
+import duke.DukeException;
 import duke.common.Messages;
 import duke.storage.SaveManager;
 import duke.task.Task;
@@ -12,12 +13,17 @@ public class DoneCommand extends Command {
     private int taskIDToComplete;
     private String result;
 
-    public DoneCommand(String taskIDInString) {
-        this.taskIDToComplete = Integer.parseInt(taskIDInString) - 1;
+    public DoneCommand(String taskIDInString) throws DukeException {
+        if (taskIDInString.matches("-?\\d+(\\.\\d+)?")) {
+            this.taskIDToComplete = Integer.parseInt(taskIDInString) - 1;
+        } else {
+            throw new DukeException("Please enter an integer");
+        }
     }
 
     /**
      * Completes the tasks if it is a valid Task that can be completed
+     *
      * @param tasks TaskList to complete the task
      * @param saveManager Updates this save file after completion
      * @return ResultCommand object that has the result of the done execution
@@ -30,6 +36,13 @@ public class DoneCommand extends Command {
         }
         return new ResultCommand(result);
     }
+
+    /**
+     * Checks if the task is a valid task or is not completed yet.
+     *
+     * @param tasks the Tasklist object which the task to check resides in
+     * @return boolean whether this task is completable or not
+     */
 
     private boolean canTaskBeCompleted(TaskList tasks) {
         boolean isValidTask = false;
