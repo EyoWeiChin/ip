@@ -1,14 +1,13 @@
 package duke.commands;
 
 import duke.DukeException;
-import duke.common.Messages;
 import duke.storage.SaveManager;
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.TaskList;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Searches and returns for all tasks with the specified due date.
@@ -16,7 +15,9 @@ import java.time.format.DateTimeFormatter;
 public class DueCommand extends Command {
 
     private static final String ERROR_INVALID_DATE = "Invalid Date! Format: 'due YYYY-MM-DD'";
-    private LocalDate checkThisDate;
+    protected static final String EXPECTED_DATE_FORMAT = "yyyy-MM-dd";
+    protected static final String SEARCH_DATE_FORMAT = "dd/MMM/yyyy";
+    private Date checkThisDate;
 
     /**
      * Constructor that validates the specified date input
@@ -26,8 +27,9 @@ public class DueCommand extends Command {
      */
     public DueCommand(String checkThisDate) throws DukeException {
         try {
-            this.checkThisDate = LocalDate.parse(checkThisDate.trim());
-        } catch(java.time.format.DateTimeParseException invalidDateFormat) {
+            SimpleDateFormat stringToDate = new SimpleDateFormat(EXPECTED_DATE_FORMAT);
+            this.checkThisDate = stringToDate.parse(checkThisDate.trim());
+        } catch (java.text.ParseException invalidDateFormat) {
             throw new DukeException(ERROR_INVALID_DATE);
         }
     }
@@ -41,11 +43,12 @@ public class DueCommand extends Command {
      */
     @Override
     public ResultCommand execute(TaskList tasks, SaveManager saveManager) {
-        String formattedDate = checkThisDate.format(DateTimeFormatter.ofPattern(Messages.DATE_TIME_FORMAT));
+        SimpleDateFormat newDateFormat = new SimpleDateFormat(SEARCH_DATE_FORMAT);
+        String formattedDate = newDateFormat.format(checkThisDate);
 
         //Used stream to find Deadline and Event tasks that has the request date, then it prints them.
         tasks.getTasks().stream().filter((s)-> s instanceof Deadline || s instanceof Event)
-                .filter((s)->s.getDueTime().equals(formattedDate.trim()))
+                .filter((s)->s.getDueTime().contains(formattedDate.trim()))
                 .forEach(System.out::println);
         return new ResultCommand();
     }
