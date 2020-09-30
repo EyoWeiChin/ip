@@ -49,7 +49,7 @@ This will add a deadline task to the task list.
 
 Format: 
 1. `deadline task_name /by due_by`
-2. `deadline task_name /by YYYY-MM-DD`
+2. `deadline task_name /by YYYY-MM-DD HHmm`
 
 Notes: 
 - Format '2' allows Duke to find this deadline with `due` command.
@@ -57,13 +57,13 @@ Notes:
 
 Sample Input: 
 1. `deadline CS2105 Assignment 1/by Wednesday`
-2. `deadline Finish this userguide/by2020-09-20`
+2. `deadline Finish this userguide/by2020-9-20 1450`
 
 The expected outcome:
 ```
 + [D][✗] CS2105 Assignment 1 (by: Wednesday!)
 You a total of tasks remaining: 26
-+ [D][✗] Finish this userguide (by:09/20/2020)
++ [D][✗] Finish this userguide (by:20/Sep/2020 02:50 PM)
 You a total of tasks remaining: 27
 ```
 
@@ -72,7 +72,7 @@ This will add an event task to the task list.
 
 Format: 
 1. `event task_name /at due_date`
-2. `event task_name /at YYYY-MM-DD`
+2. `event task_name /at YYYY-MM-DD HHmm`
 
 Notes: 
 - Format 2 allows Duke to find this deadline with `due` command.
@@ -80,13 +80,13 @@ Notes:
 
 Sample Input: 
 1. `event Meet my friends!(jk I have no friends)/at Never apparently :|`
-2. `event CS2113T tP meeting/at2020-09-25`
+2. `event CS2113T tP meeting/at2020-09-25 2000`
 
 The expected outcome:
 ```
 + [E][✗] Meet my friends!(jk I have no friends) (at: Never apparently :|)
 You a total of tasks remaining: 28
-+ [E][✗] CS2113T tP meeting (at:09/25/2020)
++ [E][✗] CS2113T tP meeting (at:25/Sep/2020 08:00 PM)
 You a total of tasks remaining: 29
 ```
 ### Completing a Task `done`
@@ -133,8 +133,8 @@ Sample Input: `find meeting`
 The expected outcome:
 ```
 [E][✗] project meeting (at:Aug 6th 2-4pm)
-[E][✗] project meeting (at:Mon 2-4pm)
-[E][✗] CS2113T tP meeting (at:09/25/2020)
+[E][✗] project meeting 2 (at:Mon 2-4pm)
+[E][✗] CS2113T tP meeting (at:25/Sep/2020 08:00 PM)
 ```
 ### Find by Due Date `due`
 Searches and prints all tasks that has the specified due date.
@@ -144,12 +144,12 @@ Format: `due search_date`
 Notes:
 - The 'search_date' must be in the following format 'YYYY-MM-DD'.
 
-Sample Input: `due 2020-09-25`
+Sample Input: `due 2020-9-25`
 
 The expected outcome:
 ```
-[E][✗] CS2113T tP meeting (at:09/25/2020)
-[D][✗] Enjoy mandatory break (by:09/25/2020)
+[E][✗] CS2113T tP meeting (at:25/Sep/2020 08:00 PM)
+[D][✗] Enjoy mandatory break (by:25/Sep/2020 10:00 PM)
 ```
 
 ### Exiting the program `bye`
@@ -166,10 +166,12 @@ Bye! Hope to see you again soon!
 
 ## FAQ
 Q: Why do I keep getting "Error: Please provide more information"
+
 A: This error message indicates that you did not provide enough information for the command to work on.
 You can refer to the sample input for more information.
 
 Q: Where does Duke store my save file?
+
 A: It will create a data/duke.txt in the working directory that Duke was called from.
 
 
@@ -179,8 +181,8 @@ A: It will create a data/duke.txt in the working directory that Duke was called 
 |---    |---|
 | List all Tasks                | `list` |
 | Add a Todo task               | `todo task_name` |
-| Add a Deadline task           | `deadline task_name /by due_by <br> deadline task_name /by YYYY-MM-DD` |
-| Add an Event task             | `event task_name /at due_date <br> event task_name /at YYYY-MM-DD`    |
+| Add a Deadline task           | `deadline task_name /by due_by` <br> `deadline task_name /by YYYY-MM-DD` |
+| Add an Event task             | `event task_name /at due_date` <br> `event task_name /at YYYY-MM-DD`    |
 | Mark a task as complete       | `done task_id` |
 | Delete a task from the list   | `delete task_id` |
 | Find a specific task          | `find search_term` |
