@@ -80,10 +80,9 @@ public class SaveManager {
         }
     }
 
-    private void createDirIfNeeded() throws IOException, DukeException {
+    private void createDirIfNeeded() throws IOException {
         if (!DATA_FOLDER.exists()) {
             Files.createDirectories(Paths.get(String.valueOf(DATA_FOLDER)));
-            throw new DukeException(Messages.MESSAGE_CREATED_SAVE_FOLDER);
         }
     }
 
