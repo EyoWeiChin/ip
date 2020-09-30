@@ -10,12 +10,12 @@ import duke.task.TaskList;
  */
 public class DeleteCommand extends Command {
     protected static final String NON_INTEGER_INPUT = "Please enter an integer";
-    private int taskToDelete;
-    private String result;
+    protected static final String INTEGER_ONLY_REGEX = "-?\\d+(\\.\\d+)?";
+    private final int taskToDelete;
 
     public DeleteCommand(String taskToDelete) throws DukeException {
         //Input validation to handle non-integer input
-        if (taskToDelete.matches("-?\\d+(\\.\\d+)?")) {
+        if (taskToDelete.matches(INTEGER_ONLY_REGEX)) {
             this.taskToDelete = Integer.parseInt(taskToDelete) - 1;
         } else {
             throw new DukeException(NON_INTEGER_INPUT);
@@ -31,6 +31,7 @@ public class DeleteCommand extends Command {
      */
     @Override
     public ResultCommand execute(TaskList tasks, SaveManager saveManager) {
+        String result;
         if (taskToDelete < 0 || taskToDelete >= tasks.getTasks().size()) {
             result = Messages.MESSAGE_NO_SUCH_TASK;
         } else {

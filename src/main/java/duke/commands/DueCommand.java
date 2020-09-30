@@ -17,7 +17,7 @@ public class DueCommand extends Command {
     private static final String ERROR_INVALID_DATE = "Invalid Date! Format: 'due YYYY-MM-DD'";
     protected static final String EXPECTED_DATE_FORMAT = "yyyy-MM-dd";
     protected static final String SEARCH_DATE_FORMAT = "dd/MMM/yyyy";
-    private Date checkThisDate;
+    private final Date checkThisDate;
 
     /**
      * Constructor that validates the specified date input

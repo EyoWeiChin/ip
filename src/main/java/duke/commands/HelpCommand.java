@@ -15,10 +15,10 @@ public class HelpCommand extends Command {
     protected static final String TODO_COMMAND = "'todo task_name'";
     protected static final String TODO_DESCRIPTION = "Adds a todo task";
 
-    protected static final String DEADLINE_COMMAND = "'deadline task_name /by due_date'";
+    protected static final String DEADLINE_COMMAND = "'deadline task_name /by YYYY-MM-DD HHmm'";
     protected static final String DEADLINE_DESCRIPTION = "Adds a deadline task";
 
-    protected static final String EVENT_COMMAND = "'event task_name /at due_date'";
+    protected static final String EVENT_COMMAND = "'event task_name /at YYYY-MM-DD HHmm'";
     protected static final String EVENT_DESCRIPTION = "Adds an event task";
 
     protected static final String DONE_COMMAND = "'done task_id'";
@@ -35,6 +35,7 @@ public class HelpCommand extends Command {
 
     protected static final String BYE_COMMAND = "'bye'";
     protected static final String EXIT_DESCRIPTION = "Exit the program";
+    protected static final String USER_GUIDE_LINK = "View the User Guide: https://eyoweichin.github.io/ip/";
 
     @Override
     public ResultCommand execute(TaskList tasks, SaveManager saveManager) {
@@ -47,7 +48,8 @@ public class HelpCommand extends Command {
         result += DELETE_COMMAND + NEW_LINE + DELETE_DESCRIPTION + TWO_NEW_LINE;
         result += FIND_COMMAND + NEW_LINE + FIND_DESCRIPTION + TWO_NEW_LINE;
         result += DUE_COMMAND + NEW_LINE + DUE_DESCRIPTION + TWO_NEW_LINE;
-        result += BYE_COMMAND + NEW_LINE + EXIT_DESCRIPTION;
+        result += BYE_COMMAND + NEW_LINE + EXIT_DESCRIPTION + NEW_LINE;
+        result += USER_GUIDE_LINK;
         return new ResultCommand(result);
     }
 }

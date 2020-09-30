@@ -25,7 +25,6 @@ public class Messages {
     public static final String MESSAGE_NO_TASK_LOADED = "No tasks loaded!";
     public static final String ERROR_DUPLICATE_SAVE = "Save file already exists!";
     public static final String MESSAGE_CREATED_SAVE_FILE = "Save file not found! New file created!";
-    public static final String MESSAGE_CREATED_SAVE_FOLDER = "Save folder not found! New directory created!";
 
     public static final String LOGO = " ____        _" + System.lineSeparator()
             + "|  _ \\ _   _| | _____" + System.lineSeparator()

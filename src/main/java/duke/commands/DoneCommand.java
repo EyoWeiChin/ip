@@ -12,12 +12,14 @@ import duke.task.TaskList;
 public class DoneCommand extends Command {
     private int taskIDToComplete;
     private String result;
+    protected static final String NON_INTEGER_INPUT = "Please enter an integer";
+    protected static final String INTEGER_ONLY_REGEX = "-?\\d+(\\.\\d+)?";
 
     public DoneCommand(String taskIDInString) throws DukeException {
-        if (taskIDInString.matches("-?\\d+(\\.\\d+)?")) {
+        if (taskIDInString.matches(INTEGER_ONLY_REGEX)) {
             this.taskIDToComplete = Integer.parseInt(taskIDInString) - 1;
         } else {
-            throw new DukeException("Please enter an integer");
+            throw new DukeException(NON_INTEGER_INPUT);
         }
     }
 

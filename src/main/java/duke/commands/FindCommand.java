@@ -7,7 +7,7 @@ import duke.task.TaskList;
  * Finds a task using the task's name and a search string
  */
 public class FindCommand extends Command {
-    private String findThisTask;
+    private final String findThisTask;
 
     public FindCommand(String findThisTask) {
         this.findThisTask = findThisTask;
@@ -18,7 +18,7 @@ public class FindCommand extends Command {
      *
      * @param tasks the TaskList object
      * @param saveManager the SaveManager object
-     * @return
+     * @return The ResultCommand object that contains the result of the execution
      */
     @Override
     public ResultCommand execute(TaskList tasks, SaveManager saveManager) {
