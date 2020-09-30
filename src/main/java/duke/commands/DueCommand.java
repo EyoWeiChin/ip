@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class DueCommand extends Command {
 
-    private static final String ERROR_INVALID_DATE = "Invalid Date! Format: 'due YYYY/MM/DD'";
+    private static final String ERROR_INVALID_DATE = "Invalid Date! Format: 'due YYYY-MM-DD'";
     private LocalDate checkThisDate;
 
     /**

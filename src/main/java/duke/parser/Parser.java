@@ -1,14 +1,7 @@
 package duke.parser;
 
 import duke.DukeException;
-import duke.commands.AddCommand;
-import duke.commands.ByeCommand;
-import duke.commands.Command;
-import duke.commands.DeleteCommand;
-import duke.commands.DoneCommand;
-import duke.commands.DueCommand;
-import duke.commands.FindCommand;
-import duke.commands.ListCommand;
+import duke.commands.*;
 import duke.common.Messages;
 
 /**
@@ -44,6 +37,7 @@ public class Parser {
 
     protected static final String COMMAND_LIST = "list";
     protected static final String COMMAND_BYE = "bye";
+    protected static final String COMMAND_HELP = "help";
 
     /**
      * Returns the raw user input into the Command for execution based on found keywords.
@@ -79,6 +73,8 @@ public class Parser {
         case COMMAND_DUE:
             commandParts = splitInputToParts(inputParts, DELIMIT_DUE, COMMAND_DUE);
             return new DueCommand(commandParts[1]);
+        case COMMAND_HELP:
+            return new HelpCommand();
         default:
             throw new DukeException(Messages.ERROR_MESSAGE_NO_INFO);
         }
