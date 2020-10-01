@@ -50,7 +50,9 @@ public class Parser {
     /**
      * Returns the raw user input into the Command for execution based on found keywords.
      *
+     * @param userInput the unprocessed User Input
      * @return the Command to be executed
+     * @throws DukeException if the user enters an invalid command.
      */
     public Command processInput(String userInput) throws DukeException {
         String[] inputParts = userInput.trim().split(RAW_COMMAND_DELIMIT, SPLIT_INPUT_LIMIT);
@@ -95,6 +97,7 @@ public class Parser {
      * @param splitBy The delimiter option to process the 2nd half of the user input
      * @param taskType The identified type of the COMMAND
      * @return processedInputs String array with the input in parts
+     * @throws DukeException if the user does not enough information for the command
      */
     public static String[] splitInputToParts(String[] inputParts, String splitBy, String taskType)
             throws DukeException {

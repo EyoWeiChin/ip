@@ -57,13 +57,18 @@ public class TextUI {
         out.println(e);
     }
 
+    /**
+     * Prints the result of a command
+     *
+     * @param printResult is a ResultCommand object that has the output of a command.
+     */
+
     public void printResultOfCommand(ResultCommand printResult) {
-        //Checks if empty string, don't print newline again
+        //Checks if empty string to prevent printing of duplicate newlines.
         if(!printResult.getResultOfCommand().equals("")) {
             out.println(printResult.getResultOfCommand());
         }
     }
-
 
     /**
      * Takes the raw user input from the next line

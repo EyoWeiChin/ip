@@ -13,6 +13,12 @@ public class DeleteCommand extends Command {
     protected static final String INTEGER_ONLY_REGEX = "-?\\d+(\\.\\d+)?";
     private final int taskToDelete;
 
+    /**
+     * Checks if String contains an integer and parses it as an int
+     *
+     * @param taskToDelete the task index to delete as String
+     * @throws DukeException If a taskToDelete is not an int
+     */
     public DeleteCommand(String taskToDelete) throws DukeException {
         //Input validation to handle non-integer input
         if (taskToDelete.matches(INTEGER_ONLY_REGEX)) {

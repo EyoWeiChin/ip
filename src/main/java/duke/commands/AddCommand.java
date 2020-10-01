@@ -51,6 +51,7 @@ public class AddCommand extends Command {
 
     /**
      * Checks if the user input a valid date and convert it to readable format
+     *
      * @param taskDuration the user input for duration
      * @return a String that has the readable date format or normal user input string if not valid date
      */

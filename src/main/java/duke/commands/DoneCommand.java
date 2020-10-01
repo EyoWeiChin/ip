@@ -15,6 +15,12 @@ public class DoneCommand extends Command {
     protected static final String NON_INTEGER_INPUT = "Please enter an integer";
     protected static final String INTEGER_ONLY_REGEX = "-?\\d+(\\.\\d+)?";
 
+    /**
+     * Checks if the String is an integer value and parses it as an int
+     *
+     * @param taskIDInString the task index to delete as String
+     * @throws DukeException If a taskIDInString is not an int
+     */
     public DoneCommand(String taskIDInString) throws DukeException {
         if (taskIDInString.matches(INTEGER_ONLY_REGEX)) {
             this.taskIDToComplete = Integer.parseInt(taskIDInString) - 1;
